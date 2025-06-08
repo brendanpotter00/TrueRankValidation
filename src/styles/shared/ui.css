@@ -1,0 +1,30 @@
+/* Shared UI Component Styles */
+
+/* Debug GUI Styles */
+.lil-gui {
+  position: fixed !important;
+  top: 10px !important;
+  right: 10px !important;
+  z-index: 1000 !important;
+  width: 280px !important;
+}
+
+.lil-gui .title {
+  background-color: var(--primary-color) !important;
+}
+
+.lil-gui .controller input[type="number"],
+.lil-gui .controller input[type="range"] {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Mobile responsive for debug controls */
+@media (max-width: 768px) {
+  .lil-gui {
+    width: 240px !important;
+    right: 5px !important;
+    top: 5px !important;
+  }
+}

@@ -2,16 +2,26 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { Park } from "../data/parks";
 
+interface RankingStep {
+  sortedParks: Park[];
+  remainingParks: Park[];
+  currentPark: Park;
+  low: number;
+  high: number;
+}
+
 interface ParksState {
   selectedParks: Park[];
   rankedParks: Park[];
   currentStep: "selection" | "ranking" | "results";
+  rankingHistory: RankingStep[];
 }
 
 const initialState: ParksState = {
   selectedParks: [],
   rankedParks: [],
   currentStep: "selection",
+  rankingHistory: [],
 };
 
 export const parksSlice = createSlice({
@@ -35,10 +45,20 @@ export const parksSlice = createSlice({
     ) => {
       state.currentStep = action.payload;
     },
+    saveRankingStep: (state, action: PayloadAction<RankingStep>) => {
+      state.rankingHistory.push(action.payload);
+    },
+    undoLastRankingStep: (state) => {
+      state.rankingHistory.pop();
+    },
+    clearRankingHistory: (state) => {
+      state.rankingHistory = [];
+    },
     resetState: (state) => {
       state.selectedParks = [];
       state.rankedParks = [];
       state.currentStep = "selection";
+      state.rankingHistory = [];
     },
   },
 });
@@ -48,6 +68,9 @@ export const {
   deselectPark,
   setRankedParks,
   setCurrentStep,
+  saveRankingStep,
+  undoLastRankingStep,
+  clearRankingHistory,
   resetState,
 } = parksSlice.actions;
 export default parksSlice.reducer;

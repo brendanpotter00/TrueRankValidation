@@ -1,0 +1,54 @@
+/* Global Header Styles */
+.app-header {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+}
+
+.app-header .nav-button {
+  background: var(--surface-color);
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.app-header .nav-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: var(--primary-color);
+}
+
+.app-header .nav-button:active {
+  transform: translateY(0);
+}
+
+.app-header .nav-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    top: 0.75rem;
+    left: 0.75rem;
+  }
+
+  .app-header .nav-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .app-header .nav-button svg {
+    width: 18px;
+    height: 18px;
+  }
+}

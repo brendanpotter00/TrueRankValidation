@@ -83,7 +83,7 @@ export const Selection = () => {
         disabled={selectedParks.length < 2}
         className="next-button"
       >
-        Next
+        Rank {`${selectedParks.length}`} Visited National Parks
       </button>
     </div>
   );

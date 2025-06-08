@@ -1,0 +1,96 @@
+/* Selection Component Styles */
+.selection-container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.parks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+/* The Radix ToggleGroup.Item */
+.park-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  background: var(--surface-color);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, border-color 0.5s ease-in-out,
+    box-shadow 0.5s ease-in-out;
+}
+
+.park-card:hover {
+  background-color: var(--accent-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* when data-state flips to "on," just change the properties */
+.park-card[data-state="on"] {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 137, 56, 0.3);
+}
+
+/* reset any old animation on deselect */
+.park-card:not([data-state="on"]) {
+  animation: none;
+}
+
+/* play the keyframes whenever data-state="on" is applied */
+.park-card[data-state="on"] {
+  animation: fadeInBorder 0.5s ease forwards;
+}
+
+.park-image {
+  width: 100%;
+  aspect-ratio: 2/3; /* vertical poster */
+  object-fit: cover;
+  object-position: center top; /* Prioritize showing the top of images */
+  border-radius: 8px;
+}
+
+.park-title {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: var(--text-color);
+  text-align: center;
+}
+
+@keyframes fadeInBorder {
+  0% {
+    border-color: var(--border-color);
+    box-shadow: 0 0 0 0 rgba(59, 137, 56, 0);
+  }
+  100% {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 137, 56, 0.3);
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  /* Make park grid show at least 3 items per row on mobile */
+  .parks-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.5rem;
+  }
+
+  /* Make park cards more compact on mobile */
+  .park-card {
+    padding: 0.3rem;
+  }
+
+  .park-image {
+    aspect-ratio: 3/4; /* Less tall on mobile */
+  }
+
+  .park-title {
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+  }
+}

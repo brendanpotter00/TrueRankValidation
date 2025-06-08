@@ -1,0 +1,13 @@
+/* Global styles and CSS variables */
+@import "./global.css";
+
+/* Component styles */
+@import "./components/Header.css";
+@import "./components/Landing.css";
+@import "./components/Selection.css";
+@import "./components/Ranking.css";
+@import "./components/Results.css";
+@import "./components/Navigation.css";
+
+/* Shared styles */
+@import "./shared/ui.css";

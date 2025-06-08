@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { Header } from "./components/Header";
 import { Landing } from "./components/Landing";
 import { Selection } from "./components/Selection";
 import { Ranking } from "./components/Ranking";
@@ -12,6 +13,7 @@ function App() {
 
   return (
     <div className="app">
+      <Header />
       {currentStep === "selection" && <Landing />}
       {currentStep === "selection" && <Selection />}
       {currentStep === "ranking" && <Ranking />}

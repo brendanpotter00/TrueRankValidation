@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { setCurrentStep } from "../store/parksSlice";
 import type { AppDispatch } from "../store/store";
 import Earth3D from "./Earth3D";
-import { BackgroundCarousel } from "./BackgroundCarousel";
+// import { BackgroundCarousel } from "./BackgroundCarousel";
 
 export const Landing = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,7 +24,7 @@ export const Landing = () => {
 
   return (
     <div>
-      <BackgroundCarousel duration={45} objectFit="cover" />
+      {/* <BackgroundCarousel duration={90} objectFit="cover" /> */}
       <div className="landing-container">
         <div className="landing-content">
           <h1>National Park Ranker</h1>

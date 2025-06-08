@@ -43,7 +43,9 @@ export const Results = () => {
 
   return (
     <div className="results-container">
-      <h2>Your Park Rankings</h2>
+      <div className="results-header">
+        <h2>Your Park Rankings</h2>
+      </div>
       <div className="rankings-list">
         {rankedParks.map((park: Park, index: number) => (
           <div key={park.id} className="ranking-item">
