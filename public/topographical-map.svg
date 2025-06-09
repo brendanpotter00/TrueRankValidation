@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" style="background-color: #f5f3f0;">
+  <defs>
+    <pattern id="topographic" patternUnits="userSpaceOnUse" width="120" height="120">
+      <!-- Contour lines with varying elevations -->
+      <g stroke="#d4c4a8" stroke-width="0.5" fill="none" opacity="0.6">
+        <!-- Main contour rings -->
+        <ellipse cx="30" cy="30" rx="25" ry="20" transform="rotate(15 30 30)"/>
+        <ellipse cx="30" cy="30" rx="20" ry="15" transform="rotate(15 30 30)"/>
+        <ellipse cx="30" cy="30" rx="15" ry="12" transform="rotate(15 30 30)"/>
+        <ellipse cx="30" cy="30" rx="10" ry="8" transform="rotate(15 30 30)"/>
+        <ellipse cx="30" cy="30" rx="5" ry="4" transform="rotate(15 30 30)"/>
+        
+        <ellipse cx="90" cy="60" rx="30" ry="25" transform="rotate(-20 90 60)"/>
+        <ellipse cx="90" cy="60" rx="25" ry="20" transform="rotate(-20 90 60)"/>
+        <ellipse cx="90" cy="60" rx="20" ry="15" transform="rotate(-20 90 60)"/>
+        <ellipse cx="90" cy="60" rx="15" ry="10" transform="rotate(-20 90 60)"/>
+        
+        <ellipse cx="60" cy="90" rx="20" ry="35" transform="rotate(45 60 90)"/>
+        <ellipse cx="60" cy="90" rx="15" ry="30" transform="rotate(45 60 90)"/>
+        <ellipse cx="60" cy="90" rx="10" ry="25" transform="rotate(45 60 90)"/>
+        
+        <!-- Irregular terrain features -->
+        <path d="M10,10 Q20,5 30,12 T50,8 L55,15 Q45,20 35,18 T15,22 Z"/>
+        <path d="M70,20 Q85,15 95,25 T115,18 L110,30 Q100,35 85,30 T75,35 Z"/>
+        <path d="M15,70 Q25,65 40,75 T60,70 L65,80 Q55,85 40,82 T20,88 Z"/>
+        <path d="M85,85 Q95,80 105,90 T115,95 L110,105 Q100,110 90,105 T85,110 Z"/>
+        
+        <!-- Ridge lines -->
+        <path d="M5,5 Q30,25 55,15 T105,35 L115,40" stroke-width="0.3"/>
+        <path d="M15,115 Q45,95 75,105 T115,85" stroke-width="0.3"/>
+        <path d="M5,60 Q35,40 65,50 T95,30" stroke-width="0.3"/>
+      </g>
+      
+      <!-- Elevation markers -->
+      <g fill="#c4a484" font-family="Arial, sans-serif" font-size="3" opacity="0.4">
+        <text x="30" y="32" text-anchor="middle">2650</text>
+        <text x="90" y="62" text-anchor="middle">2890</text>
+        <text x="60" y="92" text-anchor="middle">2420</text>
+      </g>
+      
+      <!-- Spot elevations -->
+      <g fill="#8b7355" r="0.5" opacity="0.7">
+        <circle cx="30" cy="30" r="0.8"/>
+        <circle cx="90" cy="60" r="0.8"/>
+        <circle cx="60" cy="90" r="0.8"/>
+        <circle cx="15" cy="15" r="0.5"/>
+        <circle cx="105" cy="25" r="0.5"/>
+        <circle cx="25" cy="105" r="0.5"/>
+        <circle cx="95" cy="95" r="0.5"/>
+      </g>
+    </pattern>
+    
+    <!-- Subtle texture overlay -->
+    <pattern id="texture" patternUnits="userSpaceOnUse" width="4" height="4">
+      <rect width="4" height="4" fill="#f5f3f0"/>
+      <circle cx="1" cy="1" r="0.1" fill="#ede5d8" opacity="0.3"/>
+      <circle cx="3" cy="3" r="0.1" fill="#ede5d8" opacity="0.3"/>
+      <circle cx="2" cy="3" r="0.1" fill="#e8dcc8" opacity="0.2"/>
+      <circle cx="3" cy="1" r="0.1" fill="#e8dcc8" opacity="0.2"/>
+    </pattern>
+  </defs>
+  
+  <!-- Base background -->
+  <rect width="100%" height="100%" fill="#f5f3f0"/>
+  
+  <!-- Topographical pattern -->
+  <rect width="100%" height="100%" fill="url(#topographic)"/>
+  
+  <!-- Subtle texture overlay -->
+  <rect width="100%" height="100%" fill="url(#texture)" opacity="0.3"/>
+  
+  <!-- Additional scattered terrain features -->
+  <g stroke="#d4c4a8" stroke-width="0.4" fill="none" opacity="0.5">
+    <!-- More scattered contour features across the entire map -->
+    <ellipse cx="200" cy="150" rx="40" ry="30" transform="rotate(30 200 150)"/>
+    <ellipse cx="200" cy="150" rx="30" ry="22" transform="rotate(30 200 150)"/>
+    <ellipse cx="200" cy="150" rx="20" ry="15" transform="rotate(30 200 150)"/>
+    
+    <ellipse cx="500" cy="300" rx="35" ry="25" transform="rotate(-45 500 300)"/>
+    <ellipse cx="500" cy="300" rx="25" ry="18" transform="rotate(-45 500 300)"/>
+    <ellipse cx="500" cy="300" rx="15" ry="12" transform="rotate(-45 500 300)"/>
+    
+    <ellipse cx="800" cy="200" rx="45" ry="35" transform="rotate(60 800 200)"/>
+    <ellipse cx="800" cy="200" rx="35" ry="25" transform="rotate(60 800 200)"/>
+    <ellipse cx="800" cy="200" rx="25" ry="18" transform="rotate(60 800 200)"/>
+    <ellipse cx="800" cy="200" rx="15" ry="12" transform="rotate(60 800 200)"/>
+    
+    <ellipse cx="1000" cy="500" rx="30" ry="40" transform="rotate(-15 1000 500)"/>
+    <ellipse cx="1000" cy="500" rx="22" ry="30" transform="rotate(-15 1000 500)"/>
+    <ellipse cx="1000" cy="500" rx="15" ry="20" transform="rotate(-15 1000 500)"/>
+    
+    <ellipse cx="300" cy="600" rx="50" ry="30" transform="rotate(75 300 600)"/>
+    <ellipse cx="300" cy="600" rx="40" ry="22" transform="rotate(75 300 600)"/>
+    <ellipse cx="300" cy="600" rx="30" ry="15" transform="rotate(75 300 600)"/>
+    <ellipse cx="300" cy="600" rx="20" ry="10" transform="rotate(75 300 600)"/>
+  </g>
+  
+  <!-- Additional elevation markers -->
+  <g fill="#c4a484" font-family="Arial, sans-serif" font-size="8" opacity="0.3">
+    <text x="200" y="155" text-anchor="middle">2780</text>
+    <text x="500" y="305" text-anchor="middle">3120</text>
+    <text x="800" y="205" text-anchor="middle">2950</text>
+    <text x="1000" y="505" text-anchor="middle">2680</text>
+    <text x="300" y="605" text-anchor="middle">2340</text>
+  </g>
+</svg> 

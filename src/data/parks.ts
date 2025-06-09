@@ -349,7 +349,8 @@ export const parks: Park[] = [
     name: "North Cascades",
     state: "Washington",
     established: 1968,
-    imageUrl: "",
+    imageUrl:
+      "https://www.discovernw.org/mm5/graphics/00000001/DYNW_PLU22552.jpg",
   },
   {
     id: "olym",

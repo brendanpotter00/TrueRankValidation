@@ -1,12 +1,12 @@
 :root {
   /* Warm, sandy ground */
-  --background-color: #d9d4c5; /* azw light beige */
+  --background-color: rgb(217, 212, 197); /* azw light beige */
   /* Slightly deeper for cards & panels */
   --surface-color: #e3dccf;
   /* Rich, loamy text */
-  --text-color: #24411f; /* dark taupe/forest bark */
+  --text-color: #0e2400; /* dark taupe/forest bark */
   /* Deep forest green for primary actions */
-  --primary-color: #4f7b3c;
+  --primary-color: #1f4411;
   /* Softer moss green for secondary accents */
   --secondary-color: #8da46e;
   /* Muted ochre for highlights (e.g. links, badges) */
@@ -24,7 +24,15 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segue UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  background-color: var(--background-color);
+  background-image: linear-gradient(
+      rgba(217, 212, 197, 0.858),
+      rgba(217, 212, 197, 0.874)
+    ),
+    url("/topo.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: var(--text-color);
   line-height: 1.6;
 }

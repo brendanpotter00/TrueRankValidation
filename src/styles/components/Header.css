@@ -3,7 +3,17 @@
   position: fixed;
   top: 1rem;
   left: 1rem;
+  right: 1rem;
   z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-right {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
 }
 
 .app-header .nav-button {
@@ -17,14 +27,17 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: var(--text-color);
+  color: var(--primary-color);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .app-header .nav-button:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border-color: var(--primary-color);
+  background: var(--primary-color);
+  color: white;
 }
 
 .app-header .nav-button:active {
@@ -36,10 +49,29 @@
   height: 20px;
 }
 
+.copy-success {
+  position: absolute;
+  top: 55px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary-color);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
 @media (max-width: 768px) {
   .app-header {
     top: 0.75rem;
     left: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .header-right {
+    gap: 0.5rem;
   }
 
   .app-header .nav-button {
@@ -50,5 +82,10 @@
   .app-header .nav-button svg {
     width: 18px;
     height: 18px;
+  }
+
+  .copy-success {
+    font-size: 0.7rem;
+    top: 50px;
   }
 }

@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import EarthModel from "./EarthModel";
-import DebugControls from "./DebugControls";
+// import DebugControls from "./DebugControls";
 
 const Earth3D = () => {
   return (
@@ -19,7 +19,7 @@ const Earth3D = () => {
       >
         <Suspense fallback={null}>
           {/* Debug Controls */}
-          {false && <DebugControls />}
+          {/* {true && <DebugControls />} */}
 
           {/* Lighting */}
           <ambientLight intensity={0.9} />

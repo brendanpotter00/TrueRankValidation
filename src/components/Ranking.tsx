@@ -146,6 +146,9 @@ export const Ranking = () => {
         nextSorted.splice(newLow, 0, currentPark);
         setSortedParks(nextSorted);
 
+        setLow(0);
+        setHigh(nextSorted.length);
+
         // 2) Check if there are more parks to rank
         if (remainingParks.length > 0) {
           // dequeue next park and set up comparison
@@ -154,7 +157,7 @@ export const Ranking = () => {
           setCurrentPark(next);
 
           // 3) compute its comparison
-          const mid = Math.floor(nextSorted.length / 2);
+          const mid = Math.floor(0 + nextSorted.length / 2);
           const nextComp: [Park, Park] = [next, nextSorted[mid]];
           setCurrentComparison(nextComp);
         } else {
@@ -258,6 +261,12 @@ export const Ranking = () => {
         >
           <ChevronLeftIcon />
         </button>
+      </div>
+      <div>
+        {" "}
+        {sortedParks.map((p) => {
+          return <p>{p.name}</p>;
+        })}
       </div>
     </div>
   );
