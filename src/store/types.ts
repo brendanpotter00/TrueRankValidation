@@ -4,6 +4,7 @@ export interface InsertJob {
   park: Park;
   low: number;
   high: number;
+  tried: number[];
 }
 
 export interface RankingStep {

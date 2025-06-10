@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { Park } from "../data/parks";
-import type { ParksState, InsertJob, RankingStep } from "./types";
+import type { ParksState, RankingStep } from "./types";
 
 const initialState: ParksState = {
   selectedParks: [],

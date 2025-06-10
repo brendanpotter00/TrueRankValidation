@@ -10,7 +10,6 @@ import type { Park } from "../data/parks";
 export const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [copySuccess, setCopySuccess] = useState(false);
-  const [shareSuccess, setShareSuccess] = useState(false);
   const currentStep = useSelector(
     (state: RootState) => state.parks.currentStep
   );
@@ -56,7 +55,7 @@ export const Header = () => {
     const canvas = await html2canvas(resultsContainer, {
       scale: 2,
       useCORS: true,
-      allowTaint: false, // don’t allow tainting—drop any un-CORSed pixels
+      allowTaint: false, // don't allow tainting—drop any un-CORSed pixels
       backgroundColor: "#ffffff",
       proxy: "https://your-cors-proxy.com/",
 
@@ -181,7 +180,6 @@ export const Header = () => {
               <polyline points="16,6 12,2 8,6"></polyline>
               <line x1="12" y1="2" x2="12" y2="15"></line>
             </svg>
-            {shareSuccess && <span className="copy-success">Shared!</span>}
           </button>
         </div>
       )}

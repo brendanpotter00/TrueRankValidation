@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import { setCurrentStep } from "../store/parksSlice";
 import type { AppDispatch } from "../store/store";
 import Earth3D from "./Earth3D";
-import { BackgroundCarousel } from "./BackgroundCarousel";
 // import { BackgroundCarousel } from "./BackgroundCarousel";
 
 export const Landing = () => {

@@ -22,6 +22,22 @@ interface RestoredComparison {
   pivotIndex: number;
 }
 
+// Internal job type with Set for performance
+interface InternalJob extends Omit<InsertJob, "tried"> {
+  tried: Set<number>;
+}
+
+// Helper functions to convert between Set and Array
+const jobToInternal = (job: InsertJob): InternalJob => ({
+  ...job,
+  tried: new Set(job.tried),
+});
+
+const jobToExternal = (job: InternalJob): InsertJob => ({
+  ...job,
+  tried: Array.from(job.tried),
+});
+
 export const useRankingState = () => {
   const dispatch = useDispatch<AppDispatch>();
   const selectedParks = useSelector(
@@ -32,7 +48,7 @@ export const useRankingState = () => {
   );
 
   const [sortedParks, setSortedParks] = useState<Park[]>([]);
-  const [jobs, setJobs] = useState<InsertJob[]>([]);
+  const [jobs, setJobs] = useState<InternalJob[]>([]); // Use internal type with Set
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [comparisonId, setComparisonId] = useState(0);
   const [restoredComparison, setRestoredComparison] =
@@ -51,11 +67,12 @@ export const useRankingState = () => {
     // Shuffle the parks
     const shuffledParks = shuffleArray(selectedParks);
 
-    // Create jobs with initial bounds [0,0]
-    const initialJobs: InsertJob[] = shuffledParks.map((park: Park) => ({
+    // Create jobs with initial bounds [0,0] and empty tried set
+    const initialJobs: InternalJob[] = shuffledParks.map((park: Park) => ({
       park,
       low: 0,
       high: 0,
+      tried: new Set<number>(),
     }));
 
     // Pull first job and seed sortedParks
@@ -67,6 +84,7 @@ export const useRankingState = () => {
       ...job,
       low: 0,
       high: 1,
+      tried: new Set<number>(),
     }));
 
     setJobs(updatedJobs);
@@ -76,18 +94,8 @@ export const useRankingState = () => {
     dispatch(clearRankingHistory());
   }, [selectedParks, dispatch]);
 
-  // Update job bounds whenever sortedParks changes (except during initial seeding)
-  useEffect(() => {
-    if (sortedParks.length > 0 && jobs.length > 0 && !restoredComparison) {
-      setJobs((prevJobs) =>
-        prevJobs.map((job) => ({
-          ...job,
-          low: Math.min(job.low, sortedParks.length),
-          high: sortedParks.length,
-        }))
-      );
-    }
-  }, [sortedParks.length, jobs.length, restoredComparison]);
+  // Remove the problematic bounds reset effect that was causing duplicates
+  // The bounds should only be updated through handleChoice, not reset globally
 
   // Compute next comparison
   const nextComparison = useMemo((): ComparisonState | null => {
@@ -97,7 +105,7 @@ export const useRankingState = () => {
     if (restoredComparison) {
       const { jobIndex, pivotIndex } = restoredComparison;
       if (jobIndex < jobs.length && pivotIndex < sortedParks.length) {
-        const job = jobs[jobIndex];
+        const job = jobToExternal(jobs[jobIndex]); // Convert to external format
         const pivotPark = sortedParks[pivotIndex];
         return {
           job,
@@ -110,24 +118,44 @@ export const useRankingState = () => {
       setRestoredComparison(null);
     }
 
-    // Randomly pick a job
-    const jobIndex = Math.floor(Math.random() * jobs.length);
-    const job = jobs[jobIndex];
+    // Find a job that has untried pivots
+    for (let attempts = 0; attempts < jobs.length * 2; attempts++) {
+      // Randomly pick a job
+      const jobIndex = Math.floor(Math.random() * jobs.length);
+      const job = jobs[jobIndex];
 
-    // Pick random pivot in [job.low, job.high)
-    if (job.low >= job.high) return null;
-    const pivotIndex =
-      job.low + Math.floor(Math.random() * (job.high - job.low));
-    // const pivotIndex = Math.floor((job.low + job.high) / 2);
+      // Check if this job has any untried pivots in its range
+      if (job.low >= job.high) continue;
 
-    const pivotPark = sortedParks[pivotIndex];
+      // Find all possible pivot indices in range
+      const possiblePivots: number[] = [];
+      for (let i = job.low; i < job.high; i++) {
+        if (!job.tried.has(i)) {
+          possiblePivots.push(i);
+        }
+      }
 
-    return {
-      job,
-      jobIndex,
-      pivotIndex,
-      pivotPark,
-    };
+      // If no untried pivots, this job is exhausted, skip it
+      if (possiblePivots.length === 0) continue;
+
+      // Pick a random untried pivot
+      const pivotIndex =
+        possiblePivots[Math.floor(Math.random() * possiblePivots.length)];
+      const pivotPark = sortedParks[pivotIndex];
+
+      return {
+        job: jobToExternal(job), // Convert to external format
+        jobIndex,
+        pivotIndex,
+        pivotPark,
+      };
+    }
+
+    // If we get here, all jobs might be exhausted - this shouldn't happen in normal operation
+    console.warn(
+      "No valid comparisons found - this might indicate an algorithm issue"
+    );
+    return null;
   }, [jobs, sortedParks, restoredComparison]);
 
   // Bump comparisonId when nextComparison changes and clear restored comparison
@@ -145,19 +173,28 @@ export const useRankingState = () => {
     (preferFirst: boolean) => {
       if (!nextComparison) return;
 
-      const { job, jobIndex, pivotIndex } = nextComparison;
+      const { jobIndex, pivotIndex } = nextComparison;
+      const job = jobs[jobIndex];
 
       // Save current state before making the choice, including the comparison
+      // Convert internal jobs to external format for Redux
       dispatch(
         saveRankingStep({
           sortedParks: [...sortedParks],
-          jobs: [...jobs],
+          jobs: jobs.map(jobToExternal),
           comparison: {
             jobIndex,
             pivotIndex,
           },
         })
       );
+
+      // Mark this pivot as tried for this job
+      const updatedJobs = [...jobs];
+      updatedJobs[jobIndex] = {
+        ...job,
+        tried: new Set([...job.tried, pivotIndex]),
+      };
 
       // Compute new bounds based on user choice
       const newLow = preferFirst ? job.low : pivotIndex + 1;
@@ -170,17 +207,16 @@ export const useRankingState = () => {
         setSortedParks(newSortedParks);
 
         // Remove the completed job
-        const newJobs = jobs.filter((_, index) => index !== jobIndex);
+        const newJobs = updatedJobs.filter((_, index) => index !== jobIndex);
         setJobs(newJobs);
       } else {
-        // Update job bounds
-        const newJobs = [...jobs];
-        newJobs[jobIndex] = {
-          ...job,
+        // Update job bounds and tried set
+        updatedJobs[jobIndex] = {
+          ...updatedJobs[jobIndex],
           low: newLow,
           high: newHigh,
         };
-        setJobs(newJobs);
+        setJobs(updatedJobs);
       }
     },
     [nextComparison, jobs, sortedParks, dispatch]
@@ -191,7 +227,8 @@ export const useRankingState = () => {
 
     const lastStep = rankingHistory[rankingHistory.length - 1];
     setSortedParks([...lastStep.sortedParks]);
-    setJobs([...lastStep.jobs]);
+    // Restore jobs and convert from external to internal format
+    setJobs(lastStep.jobs.map(jobToInternal));
 
     // Restore the exact comparison that was shown
     if (lastStep.comparison) {
@@ -212,7 +249,7 @@ export const useRankingState = () => {
 
   return {
     sortedParks,
-    jobs,
+    jobs: jobs.map(jobToExternal), // Convert to external format for consumers
     isInitialLoading,
     comparisonId,
     nextComparison,

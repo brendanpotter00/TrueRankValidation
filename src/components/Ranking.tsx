@@ -19,8 +19,8 @@ export const Ranking = () => {
     handleUndo,
   } = useRankingState();
 
-  useDuplicateTracking(nextComparison);
   useRankingNavigation(isComplete, sortedParks);
+  useDuplicateTracking(nextComparison);
 
   // Show a loading state until we have a comparison
   if (isInitialLoading || !nextComparison) {

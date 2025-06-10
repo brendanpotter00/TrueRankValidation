@@ -6,6 +6,19 @@ This document outlines the refactoring of the `Ranking.tsx` component to improve
 
 The original `Ranking.tsx` component was a large, monolithic component with over 350 lines of code mixing business logic, state management, and UI rendering. The refactoring breaks this down into focused, reusable pieces.
 
+## Recent Updates
+
+### Duplicate Comparison Fix
+
+- **Issue**: The ranking algorithm was showing duplicate comparisons due to random pivot selection and bounds reset effects
+- **Solution**: Added a `tried` set to each `InsertJob` to track already-seen pivot indices
+- **Redux Serialization**: Used arrays for Redux state storage while maintaining Set performance internally
+- **Benefits**:
+  - Eliminates duplicate comparisons entirely
+  - More efficient ranking process
+  - Better user experience
+  - Redux-compatible serializable state
+
 ## Refactoring Structure
 
 ### Custom Hooks
@@ -14,13 +27,14 @@ The original `Ranking.tsx` component was a large, monolithic component with over
 
 - **Purpose**: Manages the core ranking algorithm state and logic
 - **Responsibilities**:
-  - Managing sorted parks and jobs state
-  - Computing next comparisons
+  - Managing sorted parks and jobs state with duplicate prevention
+  - Computing next comparisons using tried pivot tracking
   - Handling user choices and updating algorithm state
-  - Managing undo functionality
+  - Managing undo functionality with proper state restoration
   - Progress calculation
 - **Benefits**:
   - Isolates complex ranking algorithm logic
+  - Prevents duplicate comparisons
   - Easily testable in isolation
   - Reusable across different UI implementations
 
