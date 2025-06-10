@@ -1,11 +1,18 @@
 import type { Park } from "../data/parks";
 
-interface RankingStep {
-  sortedParks: Park[];
-  remainingParks: Park[];
-  currentPark: Park;
+export interface InsertJob {
+  park: Park;
   low: number;
   high: number;
+}
+
+export interface RankingStep {
+  sortedParks: Park[];
+  jobs: InsertJob[];
+  comparison?: {
+    jobIndex: number;
+    pivotIndex: number;
+  };
 }
 
 export interface ParksState {

@@ -1,21 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { Park } from "../data/parks";
-
-interface RankingStep {
-  sortedParks: Park[];
-  remainingParks: Park[];
-  currentPark: Park;
-  low: number;
-  high: number;
-}
-
-interface ParksState {
-  selectedParks: Park[];
-  rankedParks: Park[];
-  currentStep: "selection" | "ranking" | "results";
-  rankingHistory: RankingStep[];
-}
+import type { ParksState, InsertJob, RankingStep } from "./types";
 
 const initialState: ParksState = {
   selectedParks: [],
