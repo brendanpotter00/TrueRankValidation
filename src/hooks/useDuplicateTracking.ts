@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import type { InsertJob } from "../store/types";
 import type { Park } from "../data/parks";
 
 interface ComparisonState {
-  job: InsertJob;
-  jobIndex: number;
+  parkToInsert: Park;
   pivotIndex: number;
   pivotPark: Park;
 }
@@ -17,14 +15,14 @@ export const useDuplicateTracking = (
   useEffect(() => {
     if (!nextComparison) return;
 
-    const { jobIndex, pivotIndex, job, pivotPark } = nextComparison;
-    const key = `${jobIndex}-${pivotIndex}`;
+    const { pivotIndex, parkToInsert, pivotPark } = nextComparison;
+    const key = `${parkToInsert.id}-${pivotIndex}`;
 
     setDups((prev) => {
       if (prev.has(key)) {
         // log the two parks being re-compared
         console.log(
-          `Duplicate comparison: "${job.park.name}" vs "${pivotPark.name}" (key=${key})`
+          `Duplicate comparison: "${parkToInsert.name}" vs "${pivotPark.name}" (key=${key})`
         );
         return prev;
       }

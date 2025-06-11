@@ -1,19 +1,14 @@
 import type { Park } from "../data/parks";
 
-export interface InsertJob {
-  park: Park;
+export interface BinarySearchState {
   low: number;
   high: number;
-  tried: number[];
 }
 
 export interface RankingStep {
   sortedParks: Park[];
-  jobs: InsertJob[];
-  comparison?: {
-    jobIndex: number;
-    pivotIndex: number;
-  };
+  remainingParks: Park[];
+  binarySearch: BinarySearchState | null;
 }
 
 export interface ParksState {
