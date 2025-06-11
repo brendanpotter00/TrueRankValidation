@@ -1,6 +1,7 @@
 import { useRankingState } from "../hooks/useRankingState";
 import { useRankingNavigation } from "../hooks/useRankingNavigation";
 import { useDuplicateTracking } from "../hooks/useDuplicateTracking";
+import { usePageTracker } from "../hooks/usePageTracking";
 import { ProgressBar } from "./ranking/ProgressBar";
 import { ParkComparison } from "./ranking/ParkComparison";
 import { SortedParksGrid } from "./ranking/SortedParksGrid";
@@ -18,6 +19,9 @@ export const Ranking = () => {
     handleChoice,
     handleUndo,
   } = useRankingState();
+
+  // Track page view for ranking page
+  usePageTracker("/ranking", true);
 
   useRankingNavigation(isComplete, sortedParks);
   useDuplicateTracking(nextComparison);

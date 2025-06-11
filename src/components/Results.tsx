@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { setCurrentStep } from "../store/parksSlice";
+import { usePageTracker } from "../hooks/usePageTracking";
 import type { RootState } from "../store/types";
 import type { AppDispatch } from "../store/store";
 import type { Park } from "../data/parks";
@@ -10,6 +11,9 @@ export const Results = () => {
   const rankedParks = useSelector(
     (state: RootState) => state.parks.rankedParks
   );
+
+  // Track page view for results page
+  usePageTracker("/results", true);
 
   // Handle browser back button
   useEffect(() => {

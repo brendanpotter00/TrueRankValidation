@@ -1,11 +1,17 @@
 import { useDispatch } from "react-redux";
 import { setCurrentStep } from "../store/parksSlice";
+import { usePageTracker } from "../hooks/usePageTracking";
 import type { AppDispatch } from "../store/store";
 import Earth3D from "./Earth3D";
+import { SessionCounter } from "./SessionCounter";
+// import { Analytics } from "./Analytics";
 // import { BackgroundCarousel } from "./BackgroundCarousel";
 
 export const Landing = () => {
   const dispatch = useDispatch<AppDispatch>();
+
+  // Track page view for landing page
+  usePageTracker("/landing", true);
 
   const handleStart = () => {
     dispatch(setCurrentStep("selection"));
@@ -37,6 +43,8 @@ export const Landing = () => {
           <Earth3D />
         </div>
       </div>
+      <SessionCounter duration={2.5} className="landing-session-counter" />
+      {/* <Analytics /> */}
     </div>
   );
 };
