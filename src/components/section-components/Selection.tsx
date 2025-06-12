@@ -63,10 +63,10 @@ export const Selection = () => {
     window.history.pushState({ step: "ranking" }, "", "?step=ranking");
   };
 
-  const handleClearSelection = () => {
-    // Clear all selected parks
-    selectedParks.forEach((id) => dispatch(deselectPark(id)));
-  };
+  // const handleClearSelection = () => {
+  //   // Clear all selected parks
+  //   selectedParks.forEach((id) => dispatch(deselectPark(id)));
+  // };
 
   return (
     <div className="selection-container">
