@@ -7,7 +7,7 @@ import type { AppDispatch } from "../../store/store";
 import type { Park } from "../../data/parks";
 
 // Custom hook to calculate columns based on screen width
-const useResponsiveColumns = () => {
+const useResponsiveColumns = (totalItems: number) => {
   const [columns, setColumns] = useState(1);
 
   useEffect(() => {
@@ -17,18 +17,22 @@ const useResponsiveColumns = () => {
       const containerPadding = 48; // Account for container padding
       const availableWidth = width - containerPadding;
 
-      // Calculate how many columns can fit
-      const calculatedColumns = Math.floor(availableWidth / itemWidth);
+      // Calculate how many columns can fit based on screen width
+      const maxColumnsByWidth = Math.floor(availableWidth / itemWidth);
 
-      // Set minimum and maximum columns based on screen size
+      // Calculate max columns based on having at least 5 items per column
+      const maxColumnsByItems = Math.floor(totalItems / 5);
+
+      // Use the smaller of the two constraints
+      const calculatedColumns = Math.min(maxColumnsByWidth, maxColumnsByItems);
+
+      // Set minimum and maximum columns based on screen size (max 3 columns)
       if (width < 768) {
         setColumns(1); // Mobile: always 1 column
       } else if (width < 1024) {
         setColumns(Math.min(calculatedColumns, 2)); // Tablet: max 2 columns
-      } else if (width < 1440) {
-        setColumns(Math.min(calculatedColumns, 3)); // Desktop: max 3 columns
       } else {
-        setColumns(Math.min(calculatedColumns, 4)); // Large desktop: max 4 columns
+        setColumns(Math.min(calculatedColumns, 3)); // Desktop and larger: max 3 columns
       }
     };
 
@@ -36,7 +40,7 @@ const useResponsiveColumns = () => {
     window.addEventListener("resize", calculateColumns);
 
     return () => window.removeEventListener("resize", calculateColumns);
-  }, []);
+  }, [totalItems]);
 
   return columns;
 };
@@ -46,7 +50,7 @@ export const Results = () => {
   const rankedParks = useSelector(
     (state: RootState) => state.parks.rankedParks
   );
-  const columns = useResponsiveColumns();
+  const columns = useResponsiveColumns(rankedParks.length);
 
   // Calculate rows needed for proper top-to-bottom flow
   const rows = Math.ceil(rankedParks.length / columns);
