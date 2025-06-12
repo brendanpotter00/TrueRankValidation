@@ -28,7 +28,7 @@ export const Ranking = () => {
 
   // Show a loading state until we have a comparison
   if (isInitialLoading || !nextComparison) {
-    return <div>…Preparing your ranking…</div>;
+    return <></>;
   }
 
   return (
@@ -40,7 +40,7 @@ export const Ranking = () => {
       <ProgressBar percentage={progressPercentage} />
 
       <ParkComparison
-        firstPark={nextComparison.job.park}
+        firstPark={nextComparison.parkToInsert}
         secondPark={nextComparison.pivotPark}
         comparisonId={comparisonId}
         onChooseFirst={() => handleChoice(true)}
