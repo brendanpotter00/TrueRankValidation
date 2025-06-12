@@ -2,7 +2,7 @@
 .landing-container {
   display: flex;
   align-items: center;
-  height: 100vh;
+  height: 80vh;
   gap: 1rem;
   text-align: left;
   padding: 2rem;

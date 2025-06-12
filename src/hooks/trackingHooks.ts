@@ -1,6 +1,7 @@
 // src/hooks/usePageTracking.ts
 import { useEffect, useRef } from "react";
-import { trackPageView } from "../lib/pageViews";
+import { trackLists, trackPageView } from "../lib/supabaseEndpoints";
+import type { Park } from "../data/parks";
 
 /**
  * Hook to automatically track page views when a component mounts
@@ -19,4 +20,10 @@ export function usePageTracker(path: string, enabled: boolean = false) {
   useEffect(() => {
     hasTracked.current = false;
   }, [path]);
+}
+
+export function useTrackLists(list: Park[]) {
+  useEffect(() => {
+    trackLists(list);
+  }, [list]);
 }

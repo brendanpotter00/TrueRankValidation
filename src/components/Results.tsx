@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { setCurrentStep } from "../store/parksSlice";
-import { usePageTracker } from "../hooks/usePageTracking";
+import { usePageTracker, useTrackLists } from "../hooks/trackingHooks";
 import type { RootState } from "../store/types";
 import type { AppDispatch } from "../store/store";
 import type { Park } from "../data/parks";
@@ -14,6 +14,7 @@ export const Results = () => {
 
   // Track page view for results page
   usePageTracker("/results", true);
+  useTrackLists(rankedParks);
 
   // Handle browser back button
   useEffect(() => {
@@ -41,10 +42,6 @@ export const Results = () => {
 
   return (
     <div className="results-container">
-      {/* <div className="results-header">
-        <h2>Your Park Rankings</h2>
-      </div> */}
-
       {rankedParks.length > 0 && (
         <div
           className="hero-section"

@@ -1,16 +1,13 @@
 import { useDispatch } from "react-redux";
 import { setCurrentStep } from "../store/parksSlice";
-import { usePageTracker } from "../hooks/usePageTracking";
+import { usePageTracker } from "../hooks/trackingHooks";
 import type { AppDispatch } from "../store/store";
 import Earth3D from "./Earth3D";
-import { SessionCounter } from "./SessionCounter";
-// import { Analytics } from "./Analytics";
-// import { BackgroundCarousel } from "./BackgroundCarousel";
+import { LandingMetrics } from "./LandingMetrics";
 
 export const Landing = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  // Track page view for landing page
   usePageTracker("/landing", true);
 
   const handleStart = () => {
@@ -30,7 +27,6 @@ export const Landing = () => {
 
   return (
     <div>
-      {/* <BackgroundCarousel duration={90} objectFit="cover" /> */}
       <div className="landing-container">
         <div className="landing-content">
           <h1>National Park Ranker</h1>
@@ -43,8 +39,7 @@ export const Landing = () => {
           <Earth3D />
         </div>
       </div>
-      <SessionCounter duration={2.5} className="landing-session-counter" />
-      {/* <Analytics /> */}
+      <LandingMetrics />
     </div>
   );
 };

@@ -1,0 +1,52 @@
+.count-up {
+  font-weight: bold;
+  font-size: 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    sans-serif;
+  letter-spacing: -0.02em;
+  transition: color 0.2s ease;
+}
+
+.count-up--primary {
+  color: var(--primary-color); /* Deep forest green */
+}
+
+.count-up--secondary {
+  color: var(--secondary-color); /* Softer moss green */
+}
+
+.count-up--accent {
+  color: var(--accent-color); /* Muted ochre */
+}
+
+/* Hover effects */
+.count-up--primary:hover {
+  opacity: 0.8;
+}
+
+.count-up--secondary:hover {
+  opacity: 0.8;
+}
+
+.count-up--accent:hover {
+  opacity: 0.8;
+}
+
+/* Size variants */
+.count-up--small {
+  font-size: 1.125rem;
+}
+
+.count-up--large {
+  font-size: 2rem;
+}
+
+.count-up--xl {
+  font-size: 2.5rem;
+}
+
+/* Animation state classes */
+.count-up--animating {
+  transform: scale(1.02);
+  transition: transform 0.1s ease;
+}

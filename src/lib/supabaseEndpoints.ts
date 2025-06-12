@@ -1,4 +1,5 @@
 // src/lib/pageViews.ts
+import type { Park } from "../data/parks";
 import { supabase } from "./supabase";
 import { v4 as uuidv4 } from "uuid";
 
@@ -15,7 +16,7 @@ export interface Session {
 }
 
 // key in localStorage for our one-session-per-browser
-const SESSION_KEY = "app_session_id";
+const SESSION_KEY = "national-park-ranker-session";
 
 // in-memory cache during this page-load
 let currentSessionId: string | null = null;
@@ -70,6 +71,25 @@ async function hasBeenTrackedInSession(
 
   if (error) {
     console.error("Error checking if path tracked:", error);
+    return false;
+  }
+  return (data?.length ?? 0) > 0;
+}
+
+/**
+ * Check if lists have already been tracked for the current session
+ */
+async function hasListsBeenTrackedInSession(
+  sessionId: string
+): Promise<boolean> {
+  const { data, error } = await supabase
+    .from("lists")
+    .select("id")
+    .eq("session_id", sessionId)
+    .limit(1);
+
+  if (error) {
+    console.error("Error checking if lists tracked:", error);
     return false;
   }
   return (data?.length ?? 0) > 0;
@@ -160,5 +180,91 @@ export async function getPageViewCounts() {
   } catch (err) {
     console.error("Failed to fetch page view counts:", err);
     return { data: null, error: "Failed to fetch page view counts" };
+  }
+}
+
+export async function getSessionCount() {
+  try {
+    const { count, error } = await supabase
+      .from("sessions")
+      .select("*", { count: "exact", head: true });
+
+    if (error) {
+      console.error("Error fetching final results count:", error);
+      return { data: null, error: error.message };
+    } else {
+      return { data: count, error: null };
+    }
+  } catch (err) {
+    console.error("Failed to fetch final results count:", err);
+    return { data: null, error: "Failed to fetch final results count" };
+  }
+}
+
+export async function trackLists(
+  list: Park[]
+): Promise<{ success: boolean; error?: string; skipped?: boolean }> {
+  const { sessionId, error: sessionError } = await getCurrentSession();
+  if (sessionError) {
+    return { success: false, error: sessionError };
+  }
+
+  // Check if lists have already been tracked for this session
+  if (await hasListsBeenTrackedInSession(sessionId)) {
+    console.log(
+      `📊 Skipping duplicate list tracking for session: ${sessionId}`
+    );
+    return { success: true, skipped: true };
+  }
+
+  const listJson = JSON.stringify(list);
+
+  const { error } = await supabase.from("lists").insert([
+    {
+      session_id: sessionId,
+      lists: listJson,
+      created_at: new Date().toISOString(),
+    },
+  ]);
+
+  if (error) {
+    console.error("Error tracking list:", error);
+    return { success: false, error: error.message };
+  }
+  console.log(`📊 Tracked list: ${listJson} (session ${sessionId})`);
+  return { success: true };
+}
+
+export async function getListsCount() {
+  try {
+    const { count, error } = await supabase
+      .from("lists")
+      .select("*", { count: "exact", head: true });
+
+    if (error) {
+      console.error("Error fetching lists count:", error);
+      return { data: null, error: error.message };
+    }
+
+    return { data: count, error: null };
+  } catch (err) {
+    console.error("Failed to fetch lists count:", err);
+    return { data: null, error: "Failed to fetch lists count" };
+  }
+}
+
+export async function getListsLengths() {
+  try {
+    const { data, error } = await supabase.rpc("get_average_list_length");
+
+    if (error) {
+      console.error("Error fetching lists lengths:", error);
+      return { data: null, error: error.message };
+    }
+
+    return { data, error: null };
+  } catch (err) {
+    console.error("Failed to fetch lists lengths:", err);
+    return { data: null, error: "Failed to fetch lists lengths" };
   }
 }

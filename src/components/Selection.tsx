@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { parks } from "../data/parks";
 import { selectPark, deselectPark, setCurrentStep } from "../store/parksSlice";
-import { usePageTracker } from "../hooks/usePageTracking";
-import { trackPageView } from "../lib/pageViews";
+import { usePageTracker } from "../hooks/trackingHooks";
+import { trackPageView } from "../lib/supabaseEndpoints";
 import type { RootState } from "../store/types";
 import type { AppDispatch } from "../store/store";
 

@@ -1,0 +1,75 @@
+.landing-metrics {
+  padding: 1rem 2rem;
+  height: 20vh;
+  width: 100%;
+}
+
+.landing-metrics-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.metric-label {
+  font-size: 1.25rem;
+  color: var(--text-color);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}
+
+.metric-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.metric-item .count-up {
+  font-size: 2rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .landing-metrics {
+    padding: 0.75rem 1rem;
+  }
+
+  .landing-metrics-container {
+    gap: 1.5rem;
+  }
+
+  .metric-label {
+    font-size: 0.75rem;
+  }
+
+  .metric-item .count-up {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-metrics-container {
+    gap: 1rem;
+  }
+
+  .metric-label {
+    font-size: 0.7rem;
+  }
+
+  .metric-item .count-up {
+    font-size: 1rem;
+  }
+}

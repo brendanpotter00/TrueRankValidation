@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import EarthModel from "./EarthModel";
-// import DebugControls from "./DebugControls";
 
 const Earth3D = () => {
   return (
