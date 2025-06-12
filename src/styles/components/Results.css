@@ -11,15 +11,6 @@
   margin-top: 2rem;
 }
 
-.results-header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 1rem;
-  position: relative;
-  flex-shrink: 0;
-}
-
 .results-header h2 {
   margin: 0;
   flex: 1;

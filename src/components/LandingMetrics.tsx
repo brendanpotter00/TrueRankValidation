@@ -1,4 +1,4 @@
-import { Analytics } from "./Analytics";
+// import { Analytics } from "./Analytics";
 import { CountUp } from "./CountUp";
 import {
   getListsCount,
@@ -7,13 +7,11 @@ import {
   getSessionCount,
 } from "../lib/supabaseEndpoints";
 import { useEffect, useState } from "react";
-import { MetricPaths } from "../lib/metricTypes";
 import "../styles/components/LandingMetrics.css";
 
 export const LandingMetrics = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [finalResultCount, setFinalResultCount] = useState<number | null>(null);
   const [sessionCount, setSessionCount] = useState<number | null>(null);
   const [listsCount, setListsCount] = useState<number | null>(null);
   const [avgListLength, setAvgListLengths] = useState<number | null>(null);
@@ -33,9 +31,6 @@ export const LandingMetrics = () => {
         setError(fetchedCounts.error || fetchedSessionCount.error);
       } else {
         setSessionCount(fetchedSessionCount.data);
-        setFinalResultCount(
-          fetchedCounts.data?.[MetricPaths.ActionCompleteRanking] ?? 0
-        );
         setListsCount(fetchedListsCount.data);
         setAvgListLengths(fetchedListsLengths?.data || null);
       }
