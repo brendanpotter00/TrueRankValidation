@@ -2,10 +2,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useState } from "react";
 import { HomeIcon, ReloadIcon } from "@radix-ui/react-icons";
 import html2canvas from "html2canvas";
-import { setCurrentStep, resetState } from "../store/parksSlice";
-import type { RootState } from "../store/types";
-import type { AppDispatch } from "../store/store";
-import type { Park } from "../data/parks";
+import { setCurrentStep, resetState } from "../../store/parksSlice";
+import type { RootState } from "../../store/types";
+import type { AppDispatch } from "../../store/store";
+import type { Park } from "../../data/parks";
 
 export const Header = () => {
   const dispatch = useDispatch<AppDispatch>();

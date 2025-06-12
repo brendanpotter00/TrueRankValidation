@@ -1,6 +1,6 @@
 /* Ranking Component Styles */
 .ranking-container {
-  max-width: 800px;
+  max-width: 100%;
   margin: 0 auto;
   text-align: center;
   padding: 2rem;
@@ -48,7 +48,7 @@
   font-weight: 600;
   border-radius: 12px;
   border: 2px solid transparent;
-  background: var(--surface-color);
+  background: none;
   color: var(--text-color);
   cursor: pointer;
   transition: all 0.3s ease;

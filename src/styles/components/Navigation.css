@@ -53,7 +53,7 @@
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 1rem 1.5rem;
+  padding: 1.2rem 2rem;
   border-radius: 50px;
   cursor: pointer;
   font-size: 1rem;
@@ -61,7 +61,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
   z-index: 100;
-  min-width: 100px;
+  min-width: 120px;
 }
 
 .next-button:hover:not(:disabled) {
@@ -79,4 +79,95 @@
 .next-button:not(:disabled) {
   opacity: 1;
   transform: scale(1);
+}
+
+.clear-button {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.clear-button:hover:not(:disabled) {
+  background-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.clear-button:disabled {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+}
+
+.clear-button:not(:disabled) {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.clear-button svg {
+  color: white;
+  transform: scale(2);
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .next-button {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    padding: 1rem 1.5rem;
+    font-size: 0.9rem;
+    min-width: 110px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  }
+
+  .next-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .clear-button {
+    width: 48px;
+    height: 48px;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  }
+
+  .clear-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .clear-button svg {
+    transform: scale(2.5);
+    color: white !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .next-button {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.8rem 1.2rem;
+    font-size: 0.85rem;
+    min-width: 100px;
+  }
+
+  .clear-button {
+    bottom: 1rem;
+    left: 1rem;
+  }
 }

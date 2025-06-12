@@ -36,7 +36,7 @@
   color: white;
   border: none;
   padding: 1rem 2rem;
-  border-radius: 8px;
+  border-radius: 50px;
   cursor: pointer;
   font-size: 1.1rem;
   font-weight: 600;
@@ -55,11 +55,61 @@
   .landing-container {
     flex-direction: column;
     text-align: center;
+    height: 80vh;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .landing-content {
+    padding: 1rem;
+    order: 2;
+  }
+
+  .landing-content h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .landing-content p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
   }
 
   .landing-earth {
-    width: 250px;
-    height: 250px;
-    order: -1; /* Places Earth above content */
+    width: 350px;
+    height: 350px;
+    order: 1;
+    flex: none;
+  }
+
+  .start-button {
+    padding: 0.9rem 1.8rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-container {
+    height: 80vh;
+    gap: 0.25rem;
+  }
+
+  .landing-content h1 {
+    font-size: 1.8rem;
+  }
+
+  .landing-content p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .landing-earth {
+    width: 320px;
+    height: 320px;
+  }
+
+  .start-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
   }
 }

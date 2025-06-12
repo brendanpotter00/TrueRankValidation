@@ -1,11 +1,11 @@
-import { useRankingState } from "../hooks/useRankingState";
-import { useRankingNavigation } from "../hooks/useRankingNavigation";
-import { useDuplicateTracking } from "../hooks/useDuplicateTracking";
-import { usePageTracker } from "../hooks/trackingHooks";
-import { ProgressBar } from "./ranking/ProgressBar";
-import { ParkComparison } from "./ranking/ParkComparison";
-import { SortedParksGrid } from "./ranking/SortedParksGrid";
-import { UndoButton } from "./ranking/UndoButton";
+import { useRankingState } from "../../hooks/useRankingState";
+import { useRankingNavigation } from "../../hooks/useRankingNavigation";
+import { useDuplicateTracking } from "../../hooks/useDuplicateTracking";
+import { usePageTracker } from "../../hooks/trackingHooks";
+import { ParkComparison } from "../ranking/ParkComparison";
+import { SortedParksGrid } from "../ranking/SortedParksGrid";
+import { UndoButton } from "../ranking/UndoButton";
+import { ProgressBar } from "../ranking/ProgressBar";
 
 export const Ranking = () => {
   const {
