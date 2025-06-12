@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { parks } from "../data/parks";
 import { selectPark, deselectPark, setCurrentStep } from "../store/parksSlice";
+import { usePageTracker } from "../hooks/trackingHooks";
+import { trackPageView } from "../lib/supabaseEndpoints";
 import type { RootState } from "../store/types";
 import type { AppDispatch } from "../store/store";
 
@@ -11,6 +13,9 @@ export const Selection = () => {
   const selectedParks = useSelector(
     (state: RootState) => state.parks.selectedParks
   ).map((p) => p.id);
+
+  // Track page view for selection page
+  usePageTracker("/selection", true);
 
   // Handle browser back button
   useEffect(() => {
@@ -45,6 +50,9 @@ export const Selection = () => {
   };
 
   const handleNext = () => {
+    // Track the conversion from selection to ranking (force track for actions)
+    trackPageView("/action/start-ranking", true);
+
     dispatch(setCurrentStep("ranking"));
     // Add to browser history for back button support
     window.history.pushState({ step: "ranking" }, "", "?step=ranking");

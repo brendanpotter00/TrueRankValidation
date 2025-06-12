@@ -1,10 +1,14 @@
 import { useDispatch } from "react-redux";
 import { setCurrentStep } from "../store/parksSlice";
+import { usePageTracker } from "../hooks/trackingHooks";
 import type { AppDispatch } from "../store/store";
 import Earth3D from "./Earth3D";
+import { LandingMetrics } from "./LandingMetrics";
 
 export const Landing = () => {
   const dispatch = useDispatch<AppDispatch>();
+
+  usePageTracker("/landing", true);
 
   const handleStart = () => {
     dispatch(setCurrentStep("selection"));
@@ -35,6 +39,7 @@ export const Landing = () => {
           <Earth3D />
         </div>
       </div>
+      <LandingMetrics />
     </div>
   );
 };

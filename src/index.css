@@ -73,3 +73,34 @@ button:focus-visible {
     backdrop-filter: blur(2px);
   }
 }
+
+/* Session Counter Styles */
+.session-counter {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.session-counter .counter-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #646cff;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.session-counter .counter-label {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.landing-session-counter {
+  margin-top: 2rem;
+}
+
+@media (prefers-color-scheme: light) {
+  .session-counter .counter-value {
+    color: #747bff;
+  }
+}

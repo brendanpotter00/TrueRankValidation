@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentStep, setRankedParks } from "../store/parksSlice";
+import { trackPageView } from "../lib/supabaseEndpoints";
 import type { AppDispatch } from "../store/store";
 import type { Park } from "../data/parks";
 
@@ -35,6 +36,9 @@ export const useRankingNavigation = (
   // Handle completion navigation
   useEffect(() => {
     if (isComplete) {
+      // Track ranking completion (force track for actions)
+      trackPageView("/action/complete-ranking", true);
+
       dispatch(setRankedParks(sortedParks));
       dispatch(setCurrentStep("results"));
       // Add to browser history for back button support
