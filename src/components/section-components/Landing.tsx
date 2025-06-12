@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux";
-import { setCurrentStep } from "../store/parksSlice";
-import { usePageTracker } from "../hooks/trackingHooks";
-import type { AppDispatch } from "../store/store";
-import Earth3D from "./Earth3D";
-import { LandingMetrics } from "./LandingMetrics";
+import { setCurrentStep } from "../../store/parksSlice";
+import { usePageTracker } from "../../hooks/trackingHooks";
+import type { AppDispatch } from "../../store/store";
+import { LandingMetrics } from "../LandingMetrics";
+import Earth3D from "../3d-components/Earth3D";
 
 export const Landing = () => {
   const dispatch = useDispatch<AppDispatch>();

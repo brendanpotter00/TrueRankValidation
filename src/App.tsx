@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
-import { Header } from "./components/Header";
-import { Landing } from "./components/Landing";
-import { Selection } from "./components/Selection";
-import { Ranking } from "./components/Ranking";
-import { Results } from "./components/Results";
+import { Header } from "./components/section-components/Header";
+import { Landing } from "./components/section-components/Landing";
+import { Selection } from "./components/section-components/Selection";
+import { Ranking } from "./components/section-components/Ranking";
+import { Results } from "./components/section-components/Results";
 import type { RootState } from "./store/types";
 
 function App() {

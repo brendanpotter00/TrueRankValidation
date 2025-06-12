@@ -1,12 +1,17 @@
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
+// import { Cross1Icon } from "@radix-ui/react-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { parks } from "../data/parks";
-import { selectPark, deselectPark, setCurrentStep } from "../store/parksSlice";
-import { usePageTracker } from "../hooks/trackingHooks";
-import { trackPageView } from "../lib/supabaseEndpoints";
-import type { RootState } from "../store/types";
-import type { AppDispatch } from "../store/store";
+import { parks } from "../../data/parks";
+import {
+  selectPark,
+  deselectPark,
+  setCurrentStep,
+} from "../../store/parksSlice";
+import { usePageTracker } from "../../hooks/trackingHooks";
+import { trackPageView } from "../../lib/supabaseEndpoints";
+import type { RootState } from "../../store/types";
+import type { AppDispatch } from "../../store/store";
 
 export const Selection = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -58,11 +63,15 @@ export const Selection = () => {
     window.history.pushState({ step: "ranking" }, "", "?step=ranking");
   };
 
+  // const handleClearSelection = () => {
+  //   // Clear all selected parks
+  //   selectedParks.forEach((id) => dispatch(deselectPark(id)));
+  // };
+
   return (
     <div className="selection-container">
       <h2>Select Parks to Rank</h2>
       <p>Choose at least 2 parks to begin ranking</p>
-
       <ToggleGroup.Root
         type="multiple"
         className="parks-grid"
@@ -85,7 +94,6 @@ export const Selection = () => {
           </ToggleGroup.Item>
         ))}
       </ToggleGroup.Root>
-
       <button
         onClick={handleNext}
         disabled={selectedParks.length < 2}
@@ -93,6 +101,15 @@ export const Selection = () => {
       >
         Rank {`${selectedParks.length}`} Visited National Parks
       </button>
+      {/* TODO add button */}
+      {/* <button
+        onClick={handleClearSelection}
+        disabled={selectedParks.length === 0}
+        className="clear-button"
+        title="Clear all selections"
+      >
+        <Cross1Icon />
+      </button> */}
     </div>
   );
 };
