@@ -87,13 +87,6 @@ button:disabled {
 
 /* Mobile responsive global styles */
 @media (max-width: 768px) {
-  body {
-    /* Fix mobile background issues by removing fixed attachment and adjusting size */
-    background-attachment: scroll;
-    background-size: cover;
-    background-position: center center;
-  }
-
   h1 {
     font-size: 2rem; /* Smaller on mobile to fit better */
     white-space: nowrap; /* Ensure it stays on one line */
