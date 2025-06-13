@@ -5,6 +5,12 @@ import { usePageTracker, useTrackLists } from "../../hooks/trackingHooks";
 import type { RootState } from "../../store/types";
 import type { AppDispatch } from "../../store/store";
 import type { Park } from "../../data/parks";
+import { parkImageMap } from "../../types/pictureTypes";
+
+// Import all park images
+const parkImages = import.meta.glob("/src/data/rectangle-photos/*.jpg", {
+  eager: true,
+});
 
 // Custom hook to calculate columns based on screen width
 const useResponsiveColumns = (totalItems: number) => {
@@ -55,6 +61,13 @@ export const Results = () => {
   // Calculate rows needed for proper top-to-bottom flow
   const rows = Math.ceil(rankedParks.length / columns);
 
+  // Helper function to get image source
+  const getImageSource = (parkId: string) => {
+    const imagePath = `/src/data/rectangle-photos/${parkImageMap[parkId]}`;
+    const imageModule = parkImages[imagePath] as { default: string };
+    return imageModule?.default || "";
+  };
+
   // Track page view for results page
   usePageTracker("/results", true);
   useTrackLists(rankedParks);
@@ -83,15 +96,20 @@ export const Results = () => {
     };
   }, [dispatch]);
 
+  // Get the hero image source
+  const heroImageSource =
+    rankedParks.length > 0 ? getImageSource(rankedParks[0].id) : "";
+
   return (
     <div className="results-container">
       {rankedParks.length > 0 && (
-        <div
-          className="hero-section"
-          style={{
-            backgroundImage: `url(${rankedParks[0].imageUrl})`,
-          }}
-        ></div>
+        <div className="hero-section">
+          <img
+            src={heroImageSource}
+            alt={`${rankedParks[0].name}`}
+            className="hero-image"
+          />
+        </div>
       )}
 
       {rankedParks.length > 0 && (
@@ -110,9 +128,10 @@ export const Results = () => {
             <div key={park.id} className="ranking-item">
               <span className="rank-number">#{index + 1}</span>
               <img
-                src={park.imageUrl}
+                src={getImageSource(park.id)}
                 alt={`${park.name}`}
                 className="park-image"
+                loading="lazy"
               />
               <span className="park-name">{park.name}</span>
             </div>

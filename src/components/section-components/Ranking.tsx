@@ -6,6 +6,12 @@ import { ParkComparison } from "../ranking/ParkComparison";
 import { SortedParksGrid } from "../ranking/SortedParksGrid";
 import { UndoButton } from "../ranking/UndoButton";
 import { ProgressBar } from "../ranking/ProgressBar";
+import { parkImageMap } from "../../types/pictureTypes";
+
+// Import all park images
+const parkImages = import.meta.glob("/src/data/rectangle-photos/*.jpg", {
+  eager: true,
+});
 
 export const Ranking = () => {
   const {
@@ -26,6 +32,13 @@ export const Ranking = () => {
   useRankingNavigation(isComplete, sortedParks);
   useDuplicateTracking(nextComparison);
 
+  // Helper function to get image source
+  const getImageSource = (parkId: string) => {
+    const imagePath = `/src/data/rectangle-photos/${parkImageMap[parkId]}`;
+    const imageModule = parkImages[imagePath] as { default: string };
+    return imageModule?.default || "";
+  };
+
   // Show a loading state until we have a comparison
   if (isInitialLoading || !nextComparison) {
     return <></>;
@@ -40,8 +53,14 @@ export const Ranking = () => {
       <ProgressBar percentage={progressPercentage} />
 
       <ParkComparison
-        firstPark={nextComparison.parkToInsert}
-        secondPark={nextComparison.pivotPark}
+        firstPark={{
+          ...nextComparison.parkToInsert,
+          imageUrl: getImageSource(nextComparison.parkToInsert.id),
+        }}
+        secondPark={{
+          ...nextComparison.pivotPark,
+          imageUrl: getImageSource(nextComparison.pivotPark.id),
+        }}
         comparisonId={comparisonId}
         onChooseFirst={() => handleChoice(true)}
         onChooseSecond={() => handleChoice(false)}
@@ -49,7 +68,12 @@ export const Ranking = () => {
 
       <UndoButton onUndo={handleUndo} disabled={!canUndo} />
 
-      <SortedParksGrid parks={sortedParks} />
+      <SortedParksGrid
+        parks={sortedParks.map((park) => ({
+          ...park,
+          imageUrl: getImageSource(park.id),
+        }))}
+      />
     </div>
   );
 };

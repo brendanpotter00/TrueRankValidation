@@ -12,6 +12,12 @@ import { usePageTracker } from "../../hooks/trackingHooks";
 import { trackPageView } from "../../lib/supabaseEndpoints";
 import type { RootState } from "../../store/types";
 import type { AppDispatch } from "../../store/store";
+import { parkImageMap } from "../../types/pictureTypes";
+
+// Import all park images
+const parkImages = import.meta.glob("/src/data/rectangle-photos/*.jpg", {
+  eager: true,
+});
 
 export const Selection = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -63,6 +69,13 @@ export const Selection = () => {
     window.history.pushState({ step: "ranking" }, "", "?step=ranking");
   };
 
+  // Helper function to get image source
+  const getImageSource = (parkId: string) => {
+    const imagePath = `/src/data/rectangle-photos/${parkImageMap[parkId]}`;
+    const imageModule = parkImages[imagePath] as { default: string };
+    return imageModule?.default || "";
+  };
+
   // const handleClearSelection = () => {
   //   // Clear all selected parks
   //   selectedParks.forEach((id) => dispatch(deselectPark(id)));
@@ -86,9 +99,10 @@ export const Selection = () => {
             aria-label={park.name}
           >
             <img
-              src={park.imageUrl}
+              src={getImageSource(park.id)}
               alt={`${park.name} poster`}
               className="park-image"
+              loading="lazy"
             />
             <span className="park-title">{park.name}</span>
           </ToggleGroup.Item>

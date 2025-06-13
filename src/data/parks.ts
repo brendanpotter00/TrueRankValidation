@@ -5,417 +5,451 @@ export interface Park {
   imageUrl: string;
 }
 
+// Helper function to get the image path for a park
+const getParkImagePath = (parkId: string): string => {
+  // Map park IDs to their corresponding image filenames
+  const imageMap: { [key: string]: string } = {
+    acad: "acadia.jpg",
+    arch: "arches.jpg",
+    badl: "badlands.jpg",
+    bibe: "bigbend.jpg",
+    bisc: "biscayne.jpg",
+    blca: "blackcanyon.jpg",
+    brca: "brycecanyon.jpg",
+    cany: "canyonlands.jpg",
+    care: "capitolreef.jpg",
+    cave: "carlsbadcaverns.jpg",
+    chis: "channelislands.jpg",
+    cong: "congaree.jpg",
+    crla: "craterlake.jpg",
+    cuva: "cuyahoga.jpg",
+    deva: "deathvalley.jpg",
+    dena: "denali.jpg",
+    drto: "drytortugas.jpg",
+    ever: "everglades.jpg",
+    gaar: "gatesofthearctic.jpg",
+    jeff: "gatewayarch.jpg",
+    glac: "glacier.jpg",
+    glba: "glacierbay.jpg",
+    grca: "grandcanyon.jpg",
+    grte: "grandteton.jpg",
+    grba: "greatbasin.jpg",
+    grpo: "greatsanddunes.jpg",
+    grsm: "greatsmokymountains.jpg",
+    gumo: "gaudalupemountains.jpg",
+    hale: "haleakala.jpg",
+    havo: "hawaiivolcanoes.jpg",
+    hosp: "hotsprings.jpg",
+    indu: "indianadunes.jpg",
+    isro: "isleroyale.jpg",
+    josh: "joshuatree.jpg",
+    katm: "katmai.jpg",
+    kefj: "kenaifjords.jpg",
+    king: "kingscanyon.jpg",
+    kova: "kobukvalley.jpg",
+    lacl: "lakeclark.jpg",
+    lavo: "lassenvolcanic.jpg",
+    maca: "mammothcave.jpg",
+    meve: "mesaverde.jpg",
+    mora: "mountrainier.jpg",
+    npsa: "nationalparkofamericansamoa.jpg",
+    noca: "northcascades.jpg",
+    olym: "olympic.jpg",
+    pefo: "petrifiedforest.jpg",
+    pinn: "pinnacles.jpg",
+    redw: "redwood.jpg",
+    romo: "rockymountain.jpg",
+    sagu: "saguaro.jpg",
+    seki: "sequoia.jpg",
+    shen: "shenandoah.jpg",
+    thro: "theodoreroosevelt.jpg",
+    viis: "virginislands.jpg",
+    voya: "voyageurs.jpg",
+    whsa: "whitesands.jpg",
+    wica: "windcave.jpg",
+    wrst: "wrangell.jpg",
+    yell: "yellowstone.jpg",
+    yose: "yosemite.jpg",
+    zion: "zion.jpg",
+  };
+
+  return `/src/data/rectangle-photos/${imageMap[parkId] || ""}`;
+};
+
 export const parks: Park[] = [
   {
     id: "acad",
     name: "Acadia",
     state: "Maine",
-    imageUrl:
-      "https://i.pinimg.com/736x/6f/78/53/6f7853368797f938744875684f40beb8.jpg",
+    imageUrl: getParkImagePath("acad"),
   },
   {
     id: "arch",
     name: "Arches",
     state: "Utah",
-    imageUrl:
-      "https://i.pinimg.com/736x/0e/88/a7/0e88a778fedf9153acff06e38aac7a53.jpg",
+    imageUrl: getParkImagePath("arch"),
   },
   {
     id: "badl",
     name: "Badlands",
     state: "South Dakota",
-    imageUrl:
-      "https://i.pinimg.com/736x/9f/b2/55/9fb255e5729199ffc534a1f7b8d33002.jpg",
+    imageUrl: getParkImagePath("badl"),
   },
   {
     id: "bibe",
     name: "Big Bend",
     state: "Texas",
-    imageUrl:
-      "https://i.pinimg.com/736x/3a/a8/9f/3aa89f4aca73d1256004175d0ab7ac60.jpg",
+    imageUrl: getParkImagePath("bibe"),
   },
   {
     id: "bisc",
     name: "Biscayne",
     state: "Florida",
-    imageUrl:
-      "https://i.pinimg.com/736x/ef/ca/93/efca9389cbc10a8fe063db6ca7df4b78.jpg",
+    imageUrl: getParkImagePath("bisc"),
   },
   {
     id: "blca",
     name: "Black Canyon of the Gunnison",
     state: "Colorado",
-    imageUrl:
-      "https://i.pinimg.com/736x/11/09/dd/1109dd78ef86ac6ef52c8be2b9a11b9a.jpg",
+    imageUrl: getParkImagePath("blca"),
   },
   {
     id: "brca",
     name: "Bryce Canyon",
     state: "Utah",
-    imageUrl:
-      "https://i.pinimg.com/736x/88/7c/45/887c45273666491b66aa480540b25f8f.jpg",
+    imageUrl: getParkImagePath("brca"),
   },
   {
     id: "cany",
     name: "Canyonlands",
     state: "Utah",
-    imageUrl:
-      "https://i.pinimg.com/736x/32/5b/a3/325ba3b70f5a6cbccbba06442306c69e.jpg",
+    imageUrl: getParkImagePath("cany"),
   },
   {
     id: "care",
     name: "Capitol Reef",
     state: "Utah",
-    imageUrl:
-      "https://i.pinimg.com/736x/b7/f7/78/b7f7786e7d35a67ba7c2582ca33e6b66.jpg",
+    imageUrl: getParkImagePath("care"),
   },
   {
     id: "cave",
     name: "Carlsbad Caverns",
     state: "New Mexico",
-    imageUrl:
-      "https://i.pinimg.com/736x/99/36/38/9936382f7137e257dfb21105778afab8.jpg",
+    imageUrl: getParkImagePath("cave"),
   },
   {
     id: "chis",
     name: "Channel Islands",
     state: "California",
-    imageUrl:
-      "https://i.pinimg.com/736x/9d/18/72/9d1872d0be76d94d32d53e741ee52b0e.jpg",
+    imageUrl: getParkImagePath("chis"),
   },
   {
     id: "cong",
     name: "Congaree",
     state: "South Carolina",
-    imageUrl:
-      "https://i.pinimg.com/736x/c5/7a/9a/c57a9abdfd3b728bd498b36637648b35.jpg",
+    imageUrl: getParkImagePath("cong"),
   },
   {
     id: "crla",
     name: "Crater Lake",
     state: "Oregon",
-    imageUrl:
-      "https://i.pinimg.com/736x/ac/db/bf/acdbbf5e103b91fc559796aac8c19807.jpg",
+    imageUrl: getParkImagePath("crla"),
   },
   {
     id: "cuva",
     name: "Cuyahoga Valley",
     state: "Ohio",
-    imageUrl:
-      "https://i.pinimg.com/736x/59/ba/e4/59bae4b5a927df20b971ead8c2ba3920.jpg",
+    imageUrl: getParkImagePath("cuva"),
   },
   {
     id: "deva",
     name: "Death Valley",
     state: "California",
-    imageUrl:
-      "https://i.pinimg.com/736x/fd/2d/47/fd2d47fd014cffd4a4616677c7cb046a.jpg",
+    imageUrl: getParkImagePath("deva"),
   },
   {
     id: "dena",
     name: "Denali",
     state: "Alaska",
-    imageUrl:
-      "https://i.pinimg.com/736x/58/92/b5/5892b5113e688aaa2febb76399b5141a.jpg",
+    imageUrl: getParkImagePath("dena"),
   },
   {
     id: "drto",
     name: "Dry Tortugas",
     state: "Florida",
-    imageUrl:
-      "https://i.pinimg.com/736x/71/74/cd/7174cdaa6d8b67391815131c7ca9951f.jpg",
+    imageUrl: getParkImagePath("drto"),
   },
   {
     id: "ever",
     name: "Everglades",
     state: "Florida",
-    imageUrl:
-      "https://i.pinimg.com/736x/02/d3/a2/02d3a248383995be75032462d1381a4e.jpg",
+    imageUrl: getParkImagePath("ever"),
   },
   {
     id: "gaar",
     name: "Gates of the Arctic",
     state: "Alaska",
-    imageUrl:
-      "https://i.pinimg.com/736x/f3/f8/39/f3f8393da90fad7106473e4626e56549.jpg",
+    imageUrl: getParkImagePath("gaar"),
   },
   {
     id: "jeff",
     name: "Gateway Arch",
     state: "Missouri",
-    imageUrl:
-      "https://i.pinimg.com/736x/cb/99/1b/cb991b618c6eb8d57ddec09e9db3070d.jpg",
+    imageUrl: getParkImagePath("jeff"),
   },
   {
     id: "glac",
     name: "Glacier",
     state: "Montana",
-    imageUrl:
-      "https://i.pinimg.com/736x/d7/ad/ec/d7adec273588311d2d808ecda29312b6.jpg",
+    imageUrl: getParkImagePath("glac"),
   },
   {
     id: "glba",
     name: "Glacier Bay",
     state: "Alaska",
-    imageUrl:
-      "https://i.pinimg.com/736x/ba/9c/80/ba9c8016ae92942b2461dc8cb97236cc.jpg",
+    imageUrl: getParkImagePath("glba"),
   },
   {
     id: "grca",
     name: "Grand Canyon",
     state: "Arizona",
-    imageUrl:
-      "https://i.pinimg.com/736x/3b/11/0c/3b110cbdfe4b1738520c0f8cc8264c81.jpg",
+    imageUrl: getParkImagePath("grca"),
   },
   {
     id: "grte",
     name: "Grand Teton",
     state: "Wyoming",
-    imageUrl:
-      "https://i.pinimg.com/736x/3a/72/e3/3a72e3f29bee8915e27461b75e7bda6c.jpg",
+    imageUrl: getParkImagePath("grte"),
   },
   {
     id: "grba",
     name: "Great Basin",
     state: "Nevada",
-    imageUrl:
-      "https://i.pinimg.com/736x/5d/c4/4a/5dc44aa475c0f7f485afde884003c7a2.jpg",
+    imageUrl: getParkImagePath("grba"),
   },
   {
     id: "grpo",
     name: "Great Sand Dunes",
     state: "Colorado",
-    imageUrl:
-      "https://i.pinimg.com/736x/6f/3e/41/6f3e411079cfc690ca5184aa8bc68ffd.jpg",
+    imageUrl: getParkImagePath("grpo"),
   },
   {
     id: "grsm",
     name: "Great Smoky Mountains",
     state: "Tennessee",
-    imageUrl:
-      "https://i.pinimg.com/736x/f4/be/3f/f4be3f435c3c8a2b91a2dcda91629b43.jpg",
+    imageUrl: getParkImagePath("grsm"),
   },
   {
     id: "gumo",
     name: "Guadalupe Mountains",
     state: "Texas",
-    imageUrl: "",
+    imageUrl: getParkImagePath("gumo"),
   },
   {
     id: "hale",
     name: "Haleakalā",
     state: "Hawaii",
-    imageUrl: "",
+    imageUrl: getParkImagePath("hale"),
   },
   {
     id: "havo",
     name: "Hawai'i Volcanoes",
     state: "Hawaii",
-    imageUrl: "",
+    imageUrl: getParkImagePath("havo"),
   },
   {
     id: "hosp",
     name: "Hot Springs",
     state: "Arkansas",
-    imageUrl: "",
+    imageUrl: getParkImagePath("hosp"),
   },
   {
     id: "indu",
     name: "Indiana Dunes",
     state: "Indiana",
-    imageUrl: "",
+    imageUrl: getParkImagePath("indu"),
   },
   {
     id: "isro",
     name: "Isle Royale",
     state: "Michigan",
-    imageUrl: "",
+    imageUrl: getParkImagePath("isro"),
   },
   {
     id: "josh",
     name: "Joshua Tree",
     state: "California",
-    imageUrl: "",
+    imageUrl: getParkImagePath("josh"),
   },
   {
     id: "katm",
     name: "Katmai",
     state: "Alaska",
-    imageUrl: "",
+    imageUrl: getParkImagePath("katm"),
   },
   {
     id: "kefj",
     name: "Kenai Fjords",
     state: "Alaska",
-    imageUrl: "",
+    imageUrl: getParkImagePath("kefj"),
   },
   {
     id: "king",
     name: "Kings Canyon",
     state: "California",
-    imageUrl:
-      "https://i.pinimg.com/736x/b6/3c/70/b63c70f020a4677f82bc3916a9c1fbcc.jpg",
+    imageUrl: getParkImagePath("king"),
   },
   {
     id: "kova",
     name: "Kobuk Valley",
     state: "Alaska",
-    imageUrl: "",
+    imageUrl: getParkImagePath("kova"),
   },
   {
     id: "lacl",
     name: "Lake Clark",
     state: "Alaska",
-    imageUrl: "",
+    imageUrl: getParkImagePath("lacl"),
   },
   {
     id: "lavo",
     name: "Lassen Volcanic",
     state: "California",
-    imageUrl: "",
+    imageUrl: getParkImagePath("lavo"),
   },
   {
     id: "maca",
     name: "Mammoth Cave",
     state: "Kentucky",
-    imageUrl: "",
+    imageUrl: getParkImagePath("maca"),
   },
   {
     id: "meve",
     name: "Mesa Verde",
     state: "Colorado",
-    imageUrl: "",
+    imageUrl: getParkImagePath("meve"),
   },
   {
     id: "mora",
     name: "Mount Rainier",
     state: "Washington",
-    imageUrl:
-      "https://i.pinimg.com/736x/5a/2c/79/5a2c79f5e343f97be58da08be758bcd1.jpg",
+    imageUrl: getParkImagePath("mora"),
   },
   {
     id: "npsa",
     name: "National Park of American Samoa",
     state: "American Samoa",
-    imageUrl: "",
+    imageUrl: getParkImagePath("npsa"),
   },
   {
     id: "noca",
     name: "North Cascades",
     state: "Washington",
-    imageUrl:
-      "https://www.discovernw.org/mm5/graphics/00000001/DYNW_PLU22552.jpg",
+    imageUrl: getParkImagePath("noca"),
   },
   {
     id: "olym",
     name: "Olympic",
     state: "Washington",
-    imageUrl:
-      "https://i.pinimg.com/736x/2e/f7/04/2ef70417f087a655412da143eb8226ec.jpg",
+    imageUrl: getParkImagePath("olym"),
   },
   {
     id: "pefo",
     name: "Petrified Forest",
     state: "Arizona",
-    imageUrl:
-      "https://i.pinimg.com/736x/d4/76/a1/d476a1ed9ec53901f8ec7650aabc9415.jpg",
+    imageUrl: getParkImagePath("pefo"),
   },
   {
     id: "pinn",
     name: "Pinnacles",
     state: "California",
-    imageUrl: "",
+    imageUrl: getParkImagePath("pinn"),
   },
   {
     id: "redw",
     name: "Redwood",
     state: "California",
-    imageUrl:
-      "https://i.pinimg.com/736x/ac/ef/40/acef406f61bb79320c3d409b253961d1.jpg",
+    imageUrl: getParkImagePath("redw"),
   },
   {
     id: "romo",
     name: "Rocky Mountain",
     state: "Colorado",
-    imageUrl:
-      "https://i.pinimg.com/736x/89/d7/fd/89d7fd1189c78d809dc2d6d570d2ddab.jpg",
+    imageUrl: getParkImagePath("romo"),
   },
   {
     id: "sagu",
     name: "Saguaro",
     state: "Arizona",
-    imageUrl:
-      "https://i.pinimg.com/736x/01/5c/6f/015c6f8b9fe62c90a09a8f18a0e0d10a.jpg",
+    imageUrl: getParkImagePath("sagu"),
   },
   {
     id: "seki",
     name: "Sequoia",
     state: "California",
-    imageUrl:
-      "https://i.pinimg.com/736x/1e/f7/83/1ef783003b1155782ac88f5573fe358d.jpg",
+    imageUrl: getParkImagePath("seki"),
   },
   {
     id: "shen",
     name: "Shenandoah",
     state: "Virginia",
-    imageUrl: "",
+    imageUrl: getParkImagePath("shen"),
   },
   {
     id: "thro",
     name: "Theodore Roosevelt",
     state: "North Dakota",
-    imageUrl:
-      "https://i.pinimg.com/736x/41/5d/3d/415d3d945a9c935d90dc860add72808c.jpg",
+    imageUrl: getParkImagePath("thro"),
   },
   {
     id: "viis",
     name: "Virgin Islands",
     state: "U.S. Virgin Islands",
-    imageUrl: "",
+    imageUrl: getParkImagePath("viis"),
   },
   {
     id: "voya",
     name: "Voyageurs",
     state: "Minnesota",
-    imageUrl: "",
+    imageUrl: getParkImagePath("voya"),
   },
   {
     id: "whsa",
     name: "White Sands",
     state: "New Mexico",
-    imageUrl: "",
+    imageUrl: getParkImagePath("whsa"),
   },
   {
     id: "wica",
     name: "Wind Cave",
     state: "South Dakota",
-    imageUrl: "",
+    imageUrl: getParkImagePath("wica"),
   },
   {
     id: "wrst",
     name: "Wrangell-St. Elias",
     state: "Alaska",
-    imageUrl: "",
+    imageUrl: getParkImagePath("wrst"),
   },
   {
     id: "yell",
     name: "Yellowstone",
     state: "Wyoming",
-    imageUrl:
-      "https://i.pinimg.com/736x/68/9c/fe/689cfe951da82bce6d597e10a0c330d9.jpg",
+    imageUrl: getParkImagePath("yell"),
   },
   {
     id: "yose",
     name: "Yosemite",
     state: "California",
-    imageUrl:
-      "https://i.pinimg.com/736x/db/1a/71/db1a71c5c4ffac4b21b26bf88faf07c9.jpg",
+    imageUrl: getParkImagePath("yose"),
   },
   {
     id: "zion",
     name: "Zion",
     state: "Utah",
-    imageUrl:
-      "https://i.pinimg.com/736x/72/46/eb/7246eb8a20d49f94adfa0b11be7778d9.jpg",
+    imageUrl: getParkImagePath("zion"),
   },
-];
+].map((park) => ({
+  ...park,
+  imageUrl: getParkImagePath(park.id),
+}));
