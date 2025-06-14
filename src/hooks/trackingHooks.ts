@@ -1,6 +1,6 @@
 // src/hooks/usePageTracking.ts
 import { useEffect, useRef } from "react";
-import { trackLists, trackPageView } from "../lib/supabaseEndpoints";
+import { trackLists, trackPageView } from "../supabase/supabaseEndpoints";
 import type { Park } from "../data/parks";
 
 /**

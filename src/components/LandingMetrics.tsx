@@ -5,7 +5,7 @@ import {
   getListsLengths,
   getPageViewCounts,
   getSessionCount,
-} from "../lib/supabaseEndpoints";
+} from "../supabase/supabaseEndpoints";
 import { useEffect, useState } from "react";
 import "../styles/components/LandingMetrics.css";
 

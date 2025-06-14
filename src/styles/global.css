@@ -15,6 +15,17 @@
   --border-color: #d1c7b4;
 }
 
+:root[data-theme="dark"] {
+  /* Dark mode colors - inverted and adjusted for better contrast */
+  --background-color: #1a1a1a;
+  --surface-color: #2d2d2d;
+  --text-color: #e3dccf;
+  --primary-color: #397822;
+  --secondary-color: #c9b189;
+  --accent-color: #8da46e;
+  --border-color: #404040;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -35,6 +46,14 @@ body {
   background-attachment: fixed;
   color: var(--text-color);
   line-height: 1.6;
+}
+
+body[data-theme="dark"] {
+  background-image: linear-gradient(
+      rgba(26, 26, 26, 0.95),
+      rgba(26, 26, 26, 0.95)
+    ),
+    url("/topo.jpeg");
 }
 
 .app {
@@ -91,4 +110,34 @@ button:disabled {
     font-size: 2rem; /* Smaller on mobile to fit better */
     white-space: nowrap; /* Ensure it stays on one line */
   }
+}
+
+/* Add theme toggle styles */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  background: var(--surface-color);
+  border: 2px solid var(--primary-color);
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  color: var(--text-color);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  background-color: var(--primary-color);
+  color: var(--surface-color);
+}
+
+.theme-toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-color);
 }

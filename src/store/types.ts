@@ -18,6 +18,11 @@ export interface ParksState {
   rankingHistory: RankingStep[];
 }
 
+export interface UIState {
+  isDarkMode: boolean;
+}
+
 export interface RootState {
   parks: ParksState;
+  ui: UIState;
 }

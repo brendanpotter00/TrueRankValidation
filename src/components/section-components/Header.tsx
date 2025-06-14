@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { HomeIcon, ReloadIcon } from "@radix-ui/react-icons";
 import html2canvas from "html2canvas";
 import { setCurrentStep, resetState } from "../../store/parksSlice";
 import type { RootState } from "../../store/types";
 import type { AppDispatch } from "../../store/store";
 import type { Park } from "../../data/parks";
+import { ThemeToggle } from "../ThemeToggle";
 
 export const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,6 +17,15 @@ export const Header = () => {
   const rankedParks = useSelector(
     (state: RootState) => state.parks.rankedParks
   );
+  const isDarkMode = useSelector((state: RootState) => state.ui.isDarkMode);
+
+  useEffect(() => {
+    document.documentElement.setAttribute(
+      "data-theme",
+      isDarkMode ? "dark" : "light"
+    );
+    document.body.setAttribute("data-theme", isDarkMode ? "dark" : "light");
+  }, [isDarkMode]);
 
   const handleGoHome = useCallback(() => {
     dispatch(setCurrentStep("selection"));
@@ -116,8 +126,19 @@ export const Header = () => {
   };
 
   // Don't show header on the initial landing/selection page
-  if (currentStep === "selection") {
-    return null;
+  if (currentStep === "selection" || currentStep === "ranking") {
+    return (
+      <header className="app-header">
+        <button
+          onClick={handleGoHome}
+          className="nav-button home-button"
+          title="Go to Selection"
+        >
+          <HomeIcon />
+        </button>
+        <ThemeToggle />
+      </header>
+    );
   }
 
   return (
@@ -181,6 +202,7 @@ export const Header = () => {
               <line x1="12" y1="2" x2="12" y2="15"></line>
             </svg>
           </button>
+          <ThemeToggle />
         </div>
       )}
     </header>
