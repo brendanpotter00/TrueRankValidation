@@ -153,7 +153,8 @@
   }
 
   .hero-image {
-    max-width: 40%;
+    width: 60%;
+    max-width: 25rem;
   }
 }
 
@@ -164,7 +165,6 @@
 
   .hero-section {
     margin: 3rem auto 2rem;
-    max-width: 95%;
   }
 
   .results-container .ranking-item .park-image {
@@ -181,6 +181,7 @@
   }
 
   .hero-image {
-    max-width: 40%;
+    width: 60%;
+    max-width: 20rem;
   }
 }
