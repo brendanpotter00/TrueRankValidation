@@ -85,6 +85,7 @@
   object-fit: cover;
   object-position: center top;
   flex-shrink: 0;
+  border-radius: 8px;
 }
 
 .park-choice .park-title {

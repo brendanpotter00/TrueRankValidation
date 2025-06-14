@@ -62,8 +62,8 @@ export const Header = () => {
 
     // Create a wrapper div for the background
     const wrapper = document.createElement("div");
-    wrapper.style.width = "800px";
-    wrapper.style.maxWidth = "800px";
+    wrapper.style.width = "1000px";
+    wrapper.style.maxWidth = "1000px";
     wrapper.style.margin = "0 auto";
     wrapper.style.padding = "2rem";
     wrapper.style.backgroundImage = isDarkMode
@@ -94,14 +94,30 @@ export const Header = () => {
     wrapper.appendChild(clone);
     document.body.appendChild(wrapper);
 
+    // Adjust the clone container
+    clone.style.width = "100%";
+    clone.style.maxWidth = "900px";
+    clone.style.margin = "0 auto";
+    clone.style.padding = "0";
+
+    // Style rank numbers properly
+    const rankNumbers = clone.querySelectorAll(".rank-number");
+    rankNumbers.forEach((rank) => {
+      (rank as HTMLElement).style.fontWeight = "bold";
+      (rank as HTMLElement).style.fontSize = "1.5rem";
+      (rank as HTMLElement).style.minWidth = "1.5625rem";
+      (rank as HTMLElement).style.textAlign = "center";
+      (rank as HTMLElement).style.color = "var(--primary-color)";
+      (rank as HTMLElement).style.flexShrink = "0";
+    });
+
     // Update text colors in the clone for dark mode
     if (isDarkMode) {
-      const textElements = clone.querySelectorAll(
-        ".park-name, .rank-number, .hero-title"
-      );
+      const textElements = clone.querySelectorAll(".park-name, .hero-title");
       textElements.forEach((el) => {
         (el as HTMLElement).style.color = "#ffffff";
       });
+      // Don't change rank number color in dark mode as it should stay primary color
     }
 
     // Handle all images in the clone
@@ -139,7 +155,7 @@ export const Header = () => {
     if (heroSection) {
       (heroSection as HTMLElement).style.margin = "0 auto 2rem";
       (heroSection as HTMLElement).style.width = "100%";
-      (heroSection as HTMLElement).style.maxWidth = "600px";
+      (heroSection as HTMLElement).style.maxWidth = "700px";
     }
 
     // Adjust hero image for sharing
@@ -152,21 +168,32 @@ export const Header = () => {
     // Adjust rankings list for sharing
     const rankingsList = clone.querySelector(".rankings-list");
     if (rankingsList) {
+      const items = clone.querySelectorAll(".ranking-item");
+      const columns = items.length <= 5 ? 1 : items.length <= 10 ? 2 : 3;
+
       (rankingsList as HTMLElement).style.display = "grid";
-      (rankingsList as HTMLElement).style.gridTemplateColumns =
-        "repeat(2, 1fr)";
+      (
+        rankingsList as HTMLElement
+      ).style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
       (rankingsList as HTMLElement).style.gap = "1rem";
       (rankingsList as HTMLElement).style.width = "100%";
-      (rankingsList as HTMLElement).style.maxWidth = "600px";
+      (rankingsList as HTMLElement).style.maxWidth =
+        columns === 1 ? "400px" : columns === 2 ? "600px" : "800px";
       (rankingsList as HTMLElement).style.margin = "0 auto";
+      (rankingsList as HTMLElement).style.justifyItems = "center";
+      (rankingsList as HTMLElement).style.padding = "0 1rem";
     }
 
     // Adjust ranking items for sharing
     const rankingItems = clone.querySelectorAll(".ranking-item");
     rankingItems.forEach((item) => {
       (item as HTMLElement).style.width = "100%";
-      (item as HTMLElement).style.maxWidth = "280px";
+      (item as HTMLElement).style.maxWidth = "250px";
       (item as HTMLElement).style.margin = "0 auto";
+      (item as HTMLElement).style.display = "flex";
+      (item as HTMLElement).style.alignItems = "center";
+      (item as HTMLElement).style.gap = "0.75rem";
+      (item as HTMLElement).style.padding = "0.75rem";
     });
 
     // Adjust park images in ranking items
