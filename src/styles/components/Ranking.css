@@ -1,6 +1,7 @@
 /* Ranking Component Styles */
 .ranking-container {
-  max-width: 100%;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   text-align: center;
   padding: 2rem;
@@ -12,12 +13,13 @@
   justify-content: center;
   margin-bottom: 1rem;
   position: relative;
-  min-height: 40px;
+  min-height: 2.5rem;
 }
 
 .ranking-header h2 {
   margin: 0;
   text-align: center;
+  font-size: 1.5rem;
 }
 
 .park-comparison {
@@ -32,7 +34,7 @@
 @keyframes fadeInFromBottom {
   0% {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(1.875rem);
   }
   100% {
     opacity: 1;
@@ -41,12 +43,13 @@
 }
 
 .park-choice {
-  width: 250px;
-  height: 400px;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
   padding: 1rem;
   font-size: 1.2rem;
   font-weight: 600;
-  border-radius: 12px;
+  border-radius: 0.75rem;
   border: 2px solid transparent;
   background: none;
   color: var(--text-color);
@@ -62,25 +65,25 @@
 /* Only apply hover effects on devices that support hover */
 @media (hover: hover) {
   .park-choice:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(79, 123, 60, 0.3);
+    transform: translateY(-0.125rem);
+    box-shadow: 0 0.5rem 1.5rem rgba(79, 123, 60, 0.3);
     border-color: var(--primary-color);
   }
 }
 
 /* Active state for touch devices */
 .park-choice:active {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(79, 123, 60, 0.3);
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.5rem 1.5rem rgba(79, 123, 60, 0.3);
   border-color: var(--primary-color);
 }
 
 .park-choice .park-image {
   width: 100%;
-  height: 300px;
-  object-fit: contain;
-  object-position: center;
-  border-radius: 8px;
+  max-width: 250px;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  object-position: center top;
   flex-shrink: 0;
 }
 
@@ -92,6 +95,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 0.5rem;
 }
 
 .vs {
@@ -102,6 +106,10 @@
 
 .progress-section {
   margin-bottom: 2rem;
+  width: 100%;
+  max-width: 25rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .progress-text {
@@ -117,9 +125,8 @@
   background: var(--surface-color);
   border-radius: 99999px;
   width: 100%;
-  height: 8px;
+  height: 0.5rem;
   margin: 0 auto;
-  max-width: 400px;
 }
 
 .progress-indicator {
@@ -155,6 +162,7 @@
 
   .progress-section {
     margin-bottom: 1rem;
+    max-width: 90%;
   }
 
   .park-comparison {
@@ -166,13 +174,13 @@
   }
 
   .park-choice {
-    width: 100%;
+    width: 90%;
     max-width: 300px;
-    height: 280px;
+    padding: 0.75rem;
   }
 
   .park-choice .park-image {
-    height: 200px;
+    max-width: 40%;
   }
 
   .vs {
@@ -195,11 +203,13 @@
   }
 
   .park-choice {
-    height: 240px;
+    width: 85%;
+    max-width: 250px;
+    padding: 0.5rem;
   }
 
   .park-choice .park-image {
-    height: 160px;
+    max-width: 40%;
   }
 
   .park-choice .park-title {
@@ -208,6 +218,7 @@
 
   .progress-section {
     margin-bottom: 0.75rem;
+    max-width: 95%;
   }
 
   .park-comparison {

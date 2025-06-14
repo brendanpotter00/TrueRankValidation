@@ -55,7 +55,7 @@
   animation: fadeInBorder 0.5s ease forwards;
 }
 
-.park-image {
+.selection-container .park-image {
   width: 100%;
   aspect-ratio: 2/3; /* vertical poster */
   object-fit: cover;
@@ -83,23 +83,42 @@
 
 /* Mobile responsive */
 @media (max-width: 768px) {
-  /* Make park grid show at least 3 items per row on mobile */
   .parks-grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 0.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.75rem;
   }
 
-  /* Make park cards more compact on mobile */
   .park-card {
-    padding: 0.3rem;
+    padding: 0.4rem;
   }
 
-  .park-image {
-    aspect-ratio: 3/4; /* Less tall on mobile */
+  .selection-container .park-image {
+    max-height: 160px;
+    aspect-ratio: 2/3;
   }
 
   .park-title {
     font-size: 0.85rem;
     margin-top: 0.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .parks-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .park-card {
+    padding: 0.3rem;
+  }
+
+  .selection-container .park-image {
+    max-height: 140px;
+  }
+
+  .park-title {
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
   }
 }
