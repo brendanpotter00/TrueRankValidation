@@ -90,7 +90,15 @@ button {
   transition: background-color 0.2s;
 }
 
-button:hover {
+/* Only apply hover effects on devices that support hover */
+@media (hover: hover) {
+  button:hover {
+    background-color: var(--primary-color);
+  }
+}
+
+/* Active state for touch devices */
+button:active {
   background-color: var(--primary-color);
 }
 
@@ -131,7 +139,17 @@ button:disabled {
   color: var(--text-color);
 }
 
-.theme-toggle:hover {
+/* Only apply hover effects on devices that support hover */
+@media (hover: hover) {
+  .theme-toggle:hover {
+    transform: scale(1.1);
+    background-color: var(--primary-color);
+    color: var(--surface-color);
+  }
+}
+
+/* Active state for touch devices */
+.theme-toggle:active {
   transform: scale(1.1);
   background-color: var(--primary-color);
   color: var(--surface-color);

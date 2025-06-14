@@ -25,7 +25,16 @@
     box-shadow 0.5s ease-in-out;
 }
 
-.park-card:hover {
+/* Only apply hover effects on devices that support hover */
+@media (hover: hover) {
+  .park-card:hover {
+    background-color: var(--primary-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Active state for touch devices */
+.park-card:active {
   background-color: var(--primary-color);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
