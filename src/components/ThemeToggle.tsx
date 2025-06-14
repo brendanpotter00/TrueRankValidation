@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { SunIcon, MoonIcon } from "@radix-ui/react-icons";
 import { toggleDarkMode } from "../store/uiSlice";
-import type { RootState } from "../store/types";
+import type { RootState } from "../types/reduxTypes";
 
 export const ThemeToggle = () => {
   const dispatch = useDispatch();

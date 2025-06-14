@@ -4,7 +4,7 @@ import { Landing } from "./components/section-components/Landing";
 import { Selection } from "./components/section-components/Selection";
 import { Ranking } from "./components/section-components/Ranking";
 import { Results } from "./components/section-components/Results";
-import type { RootState } from "./store/types";
+import type { RootState } from "./types/reduxTypes";
 
 function App() {
   const currentStep = useSelector(

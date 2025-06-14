@@ -10,7 +10,7 @@ import {
 } from "../../store/parksSlice";
 import { usePageTracker } from "../../hooks/trackingHooks";
 import { trackPageView } from "../../supabase/supabaseEndpoints";
-import type { RootState } from "../../store/types";
+import type { RootState } from "../../types/reduxTypes";
 import type { AppDispatch } from "../../store/store";
 import { parkImageMap } from "../../types/pictureTypes";
 

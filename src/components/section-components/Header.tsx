@@ -3,7 +3,7 @@ import { useCallback, useState, useEffect } from "react";
 import { HomeIcon, ReloadIcon } from "@radix-ui/react-icons";
 import html2canvas from "html2canvas";
 import { setCurrentStep, resetState } from "../../store/parksSlice";
-import type { RootState } from "../../store/types";
+import type { RootState } from "../../types/reduxTypes";
 import type { AppDispatch } from "../../store/store";
 import type { Park } from "../../data/parks";
 import { ThemeToggle } from "../ThemeToggle";
