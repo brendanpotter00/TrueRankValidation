@@ -57,72 +57,139 @@ export const Header = () => {
       document.querySelector<HTMLElement>(".results-container");
     if (!resultsContainer) return;
 
-    // Force every <img> in the clone to be CORS-safe
-    resultsContainer.querySelectorAll("img").forEach((img) => {
-      img.crossOrigin = "anonymous";
-    });
+    // Create a clone of the container for manipulation
+    const clone = resultsContainer.cloneNode(true) as HTMLElement;
+    clone.style.width = "800px"; // Fixed width for consistent sharing
+    clone.style.maxWidth = "800px";
+    clone.style.margin = "0 auto";
+    clone.style.padding = "2rem";
+    clone.style.backgroundColor = isDarkMode ? "#1a1a1a" : "#ffffff";
+    document.body.appendChild(clone);
 
-    const canvas = await html2canvas(resultsContainer, {
-      scale: 2,
-      useCORS: true,
-      allowTaint: false, // don't allow tainting—drop any un-CORSed pixels
-      backgroundColor: "#ffffff",
-      proxy: "https://your-cors-proxy.com/",
-
-      // onclone runs before the snapshot, so you can tweak the cloned DOM if needed
-      onclone: (doc) => {
-        const hero = doc.querySelector<HTMLElement>(".hero-section");
-        if (hero) {
-          const bg = getComputedStyle(hero).backgroundImage;
-          if (bg && bg !== "none") {
-            // replace CSS background with an <img> in the clone
-            const url = bg.slice(5, -2);
-            hero.style.backgroundImage = "";
-            const cover = doc.createElement("img");
-            cover.src = url;
-            cover.crossOrigin = "anonymous";
-            cover.style.width = "100%";
-            cover.style.height = "auto";
-            cover.style.objectFit = "cover";
-            cover.style.position = "absolute";
-            cover.style.top = "0";
-            cover.style.left = "0";
-            cover.style.zIndex = "-1";
-            hero.appendChild(cover);
+    // Handle all images in the clone
+    const images = clone.querySelectorAll("img");
+    await Promise.all(
+      Array.from(images).map((img) => {
+        return new Promise((resolve) => {
+          img.crossOrigin = "anonymous";
+          // Ensure images are loaded before capture
+          if (img.complete) {
+            resolve(null);
+          } else {
+            img.onload = () => resolve(null);
+            img.onerror = () => resolve(null);
           }
-        }
-      },
-      imageTimeout: 15000, // give big images time to load
+        });
+      })
+    );
+
+    // Adjust hero section for sharing
+    const heroSection = clone.querySelector(".hero-section");
+    if (heroSection) {
+      (heroSection as HTMLElement).style.margin = "0 auto 2rem";
+      (heroSection as HTMLElement).style.width = "100%";
+      (heroSection as HTMLElement).style.maxWidth = "600px";
+    }
+
+    // Adjust hero image for sharing
+    const heroImage = clone.querySelector(".hero-image");
+    if (heroImage) {
+      (heroImage as HTMLElement).style.width = "100%";
+      (heroImage as HTMLElement).style.maxWidth = "400px";
+    }
+
+    // Adjust rankings list for sharing
+    const rankingsList = clone.querySelector(".rankings-list");
+    if (rankingsList) {
+      (rankingsList as HTMLElement).style.display = "grid";
+      (rankingsList as HTMLElement).style.gridTemplateColumns =
+        "repeat(2, 1fr)";
+      (rankingsList as HTMLElement).style.gap = "1rem";
+      (rankingsList as HTMLElement).style.width = "100%";
+      (rankingsList as HTMLElement).style.maxWidth = "600px";
+      (rankingsList as HTMLElement).style.margin = "0 auto";
+    }
+
+    // Adjust ranking items for sharing
+    const rankingItems = clone.querySelectorAll(".ranking-item");
+    rankingItems.forEach((item) => {
+      (item as HTMLElement).style.width = "100%";
+      (item as HTMLElement).style.maxWidth = "280px";
+      (item as HTMLElement).style.margin = "0 auto";
     });
 
-    canvas.toBlob(async (blob) => {
-      if (!blob) return;
+    // Adjust park images in ranking items
+    const parkImages = clone.querySelectorAll(".ranking-item .park-image");
+    parkImages.forEach((img) => {
+      (img as HTMLElement).style.width = "70px";
+      (img as HTMLElement).style.aspectRatio = "2/3";
+    });
 
-      const file = new File([blob], "my-park-rankings.png", {
-        type: "image/png",
+    try {
+      const canvas = await html2canvas(clone, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: isDarkMode ? "#1a1a1a" : "#ffffff",
+        logging: false,
+        onclone: (clonedDoc) => {
+          // Additional adjustments if needed
+          const clonedContainer = clonedDoc.querySelector(".results-container");
+          if (clonedContainer) {
+            (clonedContainer as HTMLElement).style.transform = "none";
+          }
+        },
       });
-      // share or fallback to download…
-      if (
-        navigator.share &&
-        navigator.canShare &&
-        navigator.canShare({ files: [file] })
-      ) {
-        await navigator.share({
-          title: "My National Park Rankings",
-          text: "Check out my national park rankings!",
-          files: [file],
-        });
-      } else {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = file.name;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }
-    }, "image/png");
+
+      // Clean up the clone
+      document.body.removeChild(clone);
+
+      canvas.toBlob(
+        async (blob) => {
+          if (!blob) return;
+
+          const file = new File([blob], "my-park-rankings.png", {
+            type: "image/png",
+          });
+
+          if (
+            navigator.share &&
+            navigator.canShare &&
+            navigator.canShare({ files: [file] })
+          ) {
+            try {
+              await navigator.share({
+                title: "My National Park Rankings",
+                text: "Check out my national park rankings!",
+                files: [file],
+              });
+            } catch (err) {
+              console.error("Error sharing:", err);
+              // Fallback to download
+              downloadImage(blob);
+            }
+          } else {
+            downloadImage(blob);
+          }
+        },
+        "image/png",
+        1.0
+      );
+    } catch (err) {
+      console.error("Error generating image:", err);
+      document.body.removeChild(clone);
+    }
+  };
+
+  const downloadImage = (blob: Blob) => {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "my-park-rankings.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   // Don't show header on the initial landing/selection page
