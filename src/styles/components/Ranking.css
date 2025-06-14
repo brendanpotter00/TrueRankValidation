@@ -59,7 +59,17 @@
   animation: fadeInFromBottom 0.5s ease-out;
 }
 
-.park-choice:hover {
+/* Only apply hover effects on devices that support hover */
+@media (hover: hover) {
+  .park-choice:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(79, 123, 60, 0.3);
+    border-color: var(--primary-color);
+  }
+}
+
+/* Active state for touch devices */
+.park-choice:active {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(79, 123, 60, 0.3);
   border-color: var(--primary-color);
