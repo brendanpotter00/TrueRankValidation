@@ -59,12 +59,50 @@ export const Header = () => {
 
     // Create a clone of the container for manipulation
     const clone = resultsContainer.cloneNode(true) as HTMLElement;
-    clone.style.width = "800px"; // Fixed width for consistent sharing
-    clone.style.maxWidth = "800px";
-    clone.style.margin = "0 auto";
-    clone.style.padding = "2rem";
-    clone.style.backgroundColor = isDarkMode ? "#1a1a1a" : "#ffffff";
-    document.body.appendChild(clone);
+
+    // Create a wrapper div for the background
+    const wrapper = document.createElement("div");
+    wrapper.style.width = "800px";
+    wrapper.style.maxWidth = "800px";
+    wrapper.style.margin = "0 auto";
+    wrapper.style.padding = "2rem";
+    wrapper.style.backgroundImage = isDarkMode
+      ? "linear-gradient(rgba(26, 26, 26, 0.95), rgba(26, 26, 26, 0.95)), url('/topo.jpeg')"
+      : "linear-gradient(rgba(217, 212, 197, 0.858), rgba(217, 212, 197, 0.874)), url('/topo.jpeg')";
+    wrapper.style.backgroundSize = "cover";
+    wrapper.style.backgroundPosition = "center";
+    wrapper.style.backgroundRepeat = "no-repeat";
+    wrapper.style.backgroundColor = isDarkMode ? "#1a1a1a" : "transparent";
+    wrapper.style.borderRadius = "1rem";
+    wrapper.style.overflow = "hidden";
+    wrapper.style.color = isDarkMode ? "#ffffff" : "var(--text-color)";
+
+    // Add a subtle dark mode overlay to the content
+    if (isDarkMode) {
+      const darkOverlay = document.createElement("div");
+      darkOverlay.style.position = "absolute";
+      darkOverlay.style.top = "0";
+      darkOverlay.style.left = "0";
+      darkOverlay.style.right = "0";
+      darkOverlay.style.bottom = "0";
+      darkOverlay.style.backgroundColor = "rgba(0, 0, 0, 0.3)";
+      darkOverlay.style.pointerEvents = "none";
+      wrapper.appendChild(darkOverlay);
+    }
+
+    // Move the clone into the wrapper
+    wrapper.appendChild(clone);
+    document.body.appendChild(wrapper);
+
+    // Update text colors in the clone for dark mode
+    if (isDarkMode) {
+      const textElements = clone.querySelectorAll(
+        ".park-name, .rank-number, .hero-title"
+      );
+      textElements.forEach((el) => {
+        (el as HTMLElement).style.color = "#ffffff";
+      });
+    }
 
     // Handle all images in the clone
     const images = clone.querySelectorAll("img");
@@ -82,6 +120,19 @@ export const Header = () => {
         });
       })
     );
+
+    // Also load the background image
+    const bgImage = new Image();
+    bgImage.crossOrigin = "anonymous";
+    bgImage.src = "/topo.jpeg";
+    await new Promise((resolve) => {
+      if (bgImage.complete) {
+        resolve(null);
+      } else {
+        bgImage.onload = () => resolve(null);
+        bgImage.onerror = () => resolve(null);
+      }
+    });
 
     // Adjust hero section for sharing
     const heroSection = clone.querySelector(".hero-section");
@@ -126,23 +177,22 @@ export const Header = () => {
     });
 
     try {
-      const canvas = await html2canvas(clone, {
+      const canvas = await html2canvas(wrapper, {
         scale: 2,
         useCORS: true,
         allowTaint: true,
-        backgroundColor: isDarkMode ? "#1a1a1a" : "#ffffff",
+        backgroundColor: "transparent",
         logging: false,
         onclone: (clonedDoc) => {
-          // Additional adjustments if needed
-          const clonedContainer = clonedDoc.querySelector(".results-container");
-          if (clonedContainer) {
-            (clonedContainer as HTMLElement).style.transform = "none";
+          const clonedWrapper = clonedDoc.querySelector("div");
+          if (clonedWrapper) {
+            (clonedWrapper as HTMLElement).style.transform = "none";
           }
         },
       });
 
-      // Clean up the clone
-      document.body.removeChild(clone);
+      // Clean up the wrapper
+      document.body.removeChild(wrapper);
 
       canvas.toBlob(
         async (blob) => {
@@ -165,7 +215,6 @@ export const Header = () => {
               });
             } catch (err) {
               console.error("Error sharing:", err);
-              // Fallback to download
               downloadImage(blob);
             }
           } else {
@@ -177,7 +226,7 @@ export const Header = () => {
       );
     } catch (err) {
       console.error("Error generating image:", err);
-      document.body.removeChild(clone);
+      document.body.removeChild(wrapper);
     }
   };
 
