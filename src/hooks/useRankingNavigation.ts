@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentStep, setRankedParks } from "../store/parksSlice";
-import { trackPageView } from "../lib/supabaseEndpoints";
+import { trackPageView } from "../supabase/supabaseEndpoints";
 import type { AppDispatch } from "../store/store";
 import type { Park } from "../data/parks";
 

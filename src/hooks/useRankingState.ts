@@ -5,7 +5,7 @@ import {
   undoLastRankingStep,
   clearRankingHistory,
 } from "../store/parksSlice";
-import type { RootState } from "../store/types";
+import type { RootState } from "../types/reduxTypes";
 import type { AppDispatch } from "../store/store";
 import type { Park } from "../data/parks";
 import { shuffleArray } from "../utils/arrayUtils";

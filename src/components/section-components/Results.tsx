@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { setCurrentStep } from "../../store/parksSlice";
 import { usePageTracker, useTrackLists } from "../../hooks/trackingHooks";
-import type { RootState } from "../../store/types";
+import type { RootState } from "../../types/reduxTypes";
 import type { AppDispatch } from "../../store/store";
 import type { Park } from "../../data/parks";
 import { parkImageMap } from "../../types/pictureTypes";

@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { getPageViewCounts, getPageViews } from "../../lib/supabaseEndpoints";
+import {
+  getPageViewCounts,
+  getPageViews,
+} from "../../supabase/supabaseEndpoints";
 
 interface PageViewCounts {
   [path: string]: number;
