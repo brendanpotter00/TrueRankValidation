@@ -1,5 +1,5 @@
-import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { setCurrentStep } from "../../store/parksSlice";
 import { usePageTracker, useTrackLists } from "../../hooks/trackingHooks";
 import type { RootState } from "../../types/reduxTypes";
