@@ -168,20 +168,9 @@ export const Header = () => {
     // Adjust rankings list for sharing
     const rankingsList = clone.querySelector(".rankings-list");
     if (rankingsList) {
-      const items = clone.querySelectorAll(".ranking-item");
-      const columns = items.length <= 5 ? 1 : items.length <= 10 ? 2 : 3;
-
-      (rankingsList as HTMLElement).style.display = "grid";
-      (
-        rankingsList as HTMLElement
-      ).style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
-      (rankingsList as HTMLElement).style.gap = "1rem";
-      (rankingsList as HTMLElement).style.width = "100%";
-      (rankingsList as HTMLElement).style.maxWidth =
-        columns === 1 ? "400px" : columns === 2 ? "600px" : "800px";
-      (rankingsList as HTMLElement).style.margin = "0 auto";
-      (rankingsList as HTMLElement).style.justifyItems = "center";
-      (rankingsList as HTMLElement).style.padding = "0 1rem";
+      (rankingsList as HTMLElement).style.boxSizing = "border-box";
+      (rankingsList as HTMLElement).style.justifyContent = "center";
+      // The rest of the grid styling is now handled by CSS.
     }
 
     // Adjust ranking items for sharing
