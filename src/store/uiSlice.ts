@@ -3,7 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { UIState } from "../types/reduxTypes";
 
 const initialState: UIState = {
-  isDarkMode: false,
+  isDarkMode: true,
 };
 
 export const uiSlice = createSlice({

@@ -2,24 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
 :root {
-  /* Warm, sandy ground */
-  --background-color: rgb(217, 212, 197); /* azw light beige */
-  /* Slightly deeper for cards & panels */
-  --surface-color: #e3dccf;
-  /* Rich, loamy text */
-  --text-color: #0e2400; /* dark taupe/forest bark */
-  /* Deep forest green for primary actions */
-  --primary-color: #1f4411;
-  /* Softer moss green for secondary accents */
-  --secondary-color: #8da46e;
-  /* Muted ochre for highlights (e.g. links, badges) */
-  --accent-color: #c9b189;
-  /* Subtle, earthy border */
-  --border-color: #d1c7b4;
-}
-
-:root[data-theme="dark"] {
-  /* Dark mode colors - inverted and adjusted for better contrast */
+  /* Dark mode colors - now default */
   --background-color: #1a1a1a;
   --surface-color: #2d2d2d;
   --text-color: #e3dccf;
@@ -27,6 +10,17 @@
   --secondary-color: #c9b189;
   --accent-color: #8da46e;
   --border-color: #404040;
+}
+
+:root[data-theme="light"] {
+  /* Light mode colors - now alternative */
+  --background-color: rgb(217, 212, 197); /* azw light beige */
+  --surface-color: #e3dccf;
+  --text-color: #0e2400; /* dark taupe/forest bark */
+  --primary-color: #1f4411;
+  --secondary-color: #8da46e;
+  --accent-color: #c9b189;
+  --border-color: #d1c7b4;
 }
 
 * {
@@ -39,8 +33,8 @@ body {
   font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segue UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   background-image: linear-gradient(
-      rgba(217, 212, 197, 0.858),
-      rgba(217, 212, 197, 0.874)
+      rgba(26, 26, 26, 0.95),
+      rgba(26, 26, 26, 0.95)
     ),
     url("/topo.jpeg");
   background-size: cover;
@@ -51,10 +45,10 @@ body {
   line-height: 1.6;
 }
 
-body[data-theme="dark"] {
+body[data-theme="light"] {
   background-image: linear-gradient(
-      rgba(26, 26, 26, 0.95),
-      rgba(26, 26, 26, 0.95)
+      rgba(217, 212, 197, 0.858),
+      rgba(217, 212, 197, 0.874)
     ),
     url("/topo.jpeg");
 }
