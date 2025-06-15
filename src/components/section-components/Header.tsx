@@ -62,6 +62,9 @@ export const Header = () => {
 
     // Create a wrapper div for the background
     const wrapper = document.createElement("div");
+    wrapper.style.position = "fixed";
+    wrapper.style.top = "-9999px";
+    wrapper.style.left = "-9999px";
     wrapper.style.width = "1000px";
     wrapper.style.maxWidth = "1000px";
     wrapper.style.margin = "0 auto";
@@ -76,6 +79,7 @@ export const Header = () => {
     wrapper.style.borderRadius = "1rem";
     wrapper.style.overflow = "hidden";
     wrapper.style.color = isDarkMode ? "#ffffff" : "var(--text-color)";
+    wrapper.style.zIndex = "-1";
 
     // Add a subtle dark mode overlay to the content
     if (isDarkMode) {
@@ -87,6 +91,7 @@ export const Header = () => {
       darkOverlay.style.bottom = "0";
       darkOverlay.style.backgroundColor = "rgba(0, 0, 0, 0.3)";
       darkOverlay.style.pointerEvents = "none";
+      darkOverlay.style.zIndex = "1";
       wrapper.appendChild(darkOverlay);
     }
 
@@ -99,6 +104,8 @@ export const Header = () => {
     clone.style.maxWidth = "900px";
     clone.style.margin = "0 auto";
     clone.style.padding = "0";
+    clone.style.position = "relative";
+    clone.style.zIndex = "2";
 
     // Style rank numbers properly
     const rankNumbers = clone.querySelectorAll(".rank-number");
@@ -203,37 +210,73 @@ export const Header = () => {
           const clonedWrapper = clonedDoc.querySelector("div");
           if (clonedWrapper) {
             (clonedWrapper as HTMLElement).style.transform = "none";
+            (clonedWrapper as HTMLElement).style.position = "relative";
+            (clonedWrapper as HTMLElement).style.top = "0";
+            (clonedWrapper as HTMLElement).style.left = "0";
           }
         },
       });
 
-      // Clean up the wrapper
-      document.body.removeChild(wrapper);
+      // Clean up the wrapper immediately after capture
+      if (document.body.contains(wrapper)) {
+        document.body.removeChild(wrapper);
+      }
 
       canvas.toBlob(
         async (blob) => {
-          if (!blob) return;
+          if (!blob) {
+            console.error("Failed to create blob from canvas");
+            return;
+          }
 
           const file = new File([blob], "my-park-rankings.png", {
             type: "image/png",
           });
 
-          if (
-            navigator.share &&
-            navigator.canShare &&
-            navigator.canShare({ files: [file] })
-          ) {
+          // Debug logging for share API support
+          console.log("Share API support:", {
+            hasShare: !!navigator.share,
+            hasCanShare: !!navigator.canShare,
+            canShareFile: navigator.canShare
+              ? navigator.canShare({ files: [file] })
+              : false,
+            fileSize: file.size,
+            fileType: file.type,
+          });
+
+          // Try to share using Web Share API
+          if (navigator.share) {
             try {
-              await navigator.share({
-                title: "My National Park Rankings",
-                text: "Check out my national park rankings!",
-                files: [file],
-              });
+              // For iOS devices, we need to ensure the blob is properly created
+              if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                // Create a new blob with explicit type
+                const newBlob = new Blob([blob], { type: "image/png" });
+                const newFile = new File([newBlob], "my-park-rankings.png", {
+                  type: "image/png",
+                  lastModified: new Date().getTime(),
+                });
+
+                await navigator.share({
+                  title: "My National Park Rankings",
+                  text: "Check out my national park rankings!",
+                  files: [newFile],
+                });
+              } else {
+                await navigator.share({
+                  title: "My National Park Rankings",
+                  text: "Check out my national park rankings!",
+                  files: [file],
+                });
+              }
             } catch (err) {
-              console.error("Error sharing:", err);
+              console.error("Share API error:", err);
+              // If sharing fails, fall back to download
               downloadImage(blob);
             }
           } else {
+            console.log(
+              "Web Share API not supported, falling back to download"
+            );
             downloadImage(blob);
           }
         },
@@ -242,19 +285,53 @@ export const Header = () => {
       );
     } catch (err) {
       console.error("Error generating image:", err);
-      document.body.removeChild(wrapper);
+      // Ensure wrapper is cleaned up even if there's an error
+      if (document.body.contains(wrapper)) {
+        document.body.removeChild(wrapper);
+      }
     }
   };
 
   const downloadImage = (blob: Blob) => {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "my-park-rankings.png";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    try {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "my-park-rankings.png";
+      // Ensure the link is visible and clickable on mobile
+      link.style.display = "block";
+      link.style.position = "fixed";
+      link.style.top = "50%";
+      link.style.left = "50%";
+      link.style.transform = "translate(-50%, -50%)";
+      link.style.padding = "1rem";
+      link.style.background = "var(--primary-color)";
+      link.style.color = "white";
+      link.style.borderRadius = "0.5rem";
+      link.style.textDecoration = "none";
+      link.style.zIndex = "9999";
+      link.textContent = "Download Rankings";
+
+      // Add click handler to clean up
+      const cleanup = () => {
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      };
+
+      link.onclick = (e) => {
+        e.preventDefault();
+        cleanup();
+        // Trigger download
+        link.click();
+      };
+
+      document.body.appendChild(link);
+
+      // Auto-cleanup after 5 seconds if not clicked
+      setTimeout(cleanup, 5000);
+    } catch (err) {
+      console.error("Error in downloadImage:", err);
+    }
   };
 
   // Don't show header on the initial landing/selection page
