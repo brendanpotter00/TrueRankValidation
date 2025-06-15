@@ -7,6 +7,7 @@ import { SortedParksGrid } from "../ranking/SortedParksGrid";
 import { UndoButton } from "../ranking/UndoButton";
 import { ProgressBar } from "../ranking/ProgressBar";
 import { parkImageMap } from "../../types/pictureTypes";
+import { isLocalEnv } from "../../utils/environment";
 
 // Import all park images
 const parkImages = import.meta.glob("/src/data/rectangle-photos/*.jpg", {
@@ -68,7 +69,7 @@ export const Ranking = () => {
 
       <UndoButton onUndo={handleUndo} disabled={!canUndo} />
 
-      {false && (
+      {isLocalEnv && (
         <SortedParksGrid
           parks={sortedParks.map((park) => ({
             ...park,

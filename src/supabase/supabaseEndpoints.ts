@@ -2,6 +2,7 @@
 import type { Park } from "../data/parks";
 import { supabase } from "./supabase";
 import { v4 as uuidv4 } from "uuid";
+import { devLog, devErrorLog } from "../utils/environment";
 
 export interface PageView {
   id?: string;
@@ -76,7 +77,7 @@ async function hasBeenTrackedInSession(
     .limit(1);
 
   if (error) {
-    console.error("Error checking if path tracked:", error);
+    devErrorLog("Error checking if path tracked:", error);
     return false;
   }
   return (data?.length ?? 0) > 0;
@@ -95,7 +96,7 @@ async function hasListsBeenTrackedInSession(
     .limit(1);
 
   if (error) {
-    console.error("Error checking if lists tracked:", error);
+    devErrorLog("Error checking if lists tracked:", error);
     return false;
   }
   return (data?.length ?? 0) > 0;
@@ -114,7 +115,7 @@ export async function trackPageView(
   }
 
   if (!forceTrack && (await hasBeenTrackedInSession(sessionId, path))) {
-    console.log(`📊 Skipping duplicate path: ${path}`);
+    devLog(`📊 Skipping duplicate path: ${path}`);
     return { success: true, skipped: true };
   }
 
@@ -128,11 +129,11 @@ export async function trackPageView(
   ]);
 
   if (error) {
-    console.error("Error tracking page view:", error);
+    devErrorLog("Error tracking page view:", error);
     return { success: false, error: error.message };
   }
 
-  console.log(`📊 Tracked page view: ${path} (session ${sessionId})`);
+  devLog(`📊 Tracked page view: ${path} (session ${sessionId})`);
   return { success: true };
 }
 
@@ -153,7 +154,7 @@ export async function getPageViews(path?: string) {
     const { data, error } = await query;
 
     if (error) {
-      console.error("Error fetching page views:", error);
+      devErrorLog("Error fetching page views:", error);
       return { data: null, error: error.message };
     }
 
@@ -172,7 +173,7 @@ export async function getPageViewCounts() {
     const { data, error } = await supabase.from("page_views").select("path");
 
     if (error) {
-      console.error("Error fetching page view counts:", error);
+      devErrorLog("Error fetching page view counts:", error);
       return { data: null, error: error.message };
     }
 
@@ -196,7 +197,7 @@ export async function getSessionCount() {
       .select("*", { count: "exact", head: true });
 
     if (error) {
-      console.error("Error fetching final results count:", error);
+      devErrorLog("Error fetching final results count:", error);
       return { data: null, error: error.message };
     } else {
       return { data: count, error: null };
@@ -217,9 +218,7 @@ export async function trackLists(
 
   // Check if lists have already been tracked for this session
   if (await hasListsBeenTrackedInSession(sessionId)) {
-    console.log(
-      `📊 Skipping duplicate list tracking for session: ${sessionId}`
-    );
+    devLog(`📊 Skipping duplicate list tracking for session: ${sessionId}`);
     return { success: true, skipped: true };
   }
 
@@ -234,10 +233,10 @@ export async function trackLists(
   ]);
 
   if (error) {
-    console.error("Error tracking list:", error);
+    devErrorLog("Error tracking list:", error);
     return { success: false, error: error.message };
   }
-  console.log(`📊 Tracked list: ${listJson} (session ${sessionId})`);
+  devLog(`📊 Tracked list: ${listJson} (session ${sessionId})`);
   return { success: true };
 }
 
@@ -248,7 +247,7 @@ export async function getListsCount() {
       .select("*", { count: "exact", head: true });
 
     if (error) {
-      console.error("Error fetching lists count:", error);
+      devErrorLog("Error fetching lists count:", error);
       return { data: null, error: error.message };
     }
 
@@ -264,7 +263,7 @@ export async function getListsLengths() {
     const { data, error } = await supabase.rpc("get_average_list_length");
 
     if (error) {
-      console.error("Error fetching lists lengths:", error);
+      devErrorLog("Error fetching lists lengths:", error);
       return { data: null, error: error.message };
     }
 
@@ -318,7 +317,7 @@ export async function subscribeEmail(
       .limit(1);
 
     if (checkError) {
-      console.error("Error checking for existing email:", checkError);
+      devErrorLog("Error checking for existing email:", checkError);
       return { success: false, error: "An error occurred. Please try again." };
     }
 
@@ -337,7 +336,7 @@ export async function subscribeEmail(
       ]);
 
     if (insertError) {
-      console.error("Error subscribing email:", insertError);
+      devErrorLog("Error subscribing email:", insertError);
       return {
         success: false,
         error: "An error occurred. Please try again.",

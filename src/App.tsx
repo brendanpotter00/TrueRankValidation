@@ -21,7 +21,7 @@ function App() {
         {currentStep === "ranking" && <Ranking />}
         {currentStep === "results" && <Results />}
       </main>
-      <Footer />
+      {currentStep !== "ranking" && <Footer />}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { usePageTracker } from "../../hooks/trackingHooks";
 import type { AppDispatch } from "../../store/store";
 import { LandingMetrics } from "../LandingMetrics";
 import Earth3D from "../3d-components/Earth3D";
+import { TypeAnimation } from "react-type-animation";
 
 export const Landing = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -29,8 +30,18 @@ export const Landing = () => {
     <div>
       <div className="landing-container">
         <div className="landing-content">
-          <h1>National Park Ranker</h1>
-          <p>Get your true ranked list for U.S. National Parks</p>
+          <h1>
+            national park{" "}
+            <TypeAnimation
+              sequence={["Ranker", 2000, "rankr", 8000]}
+              speed={1}
+              deletionSpeed={1}
+              repeat={Infinity}
+              cursor={true}
+              className="typing-text"
+            />
+          </h1>
+          <p>get your true ranked list for u.s. national parks</p>
           <button onClick={handleStart} className="start-button">
             Start Ranking
           </button>

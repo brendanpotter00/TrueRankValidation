@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import type { Park } from "../data/parks";
+import { devLog } from "../utils/environment";
 
 interface ComparisonState {
   parkToInsert: Park;
@@ -21,7 +22,7 @@ export const useDuplicateTracking = (
     setDups((prev) => {
       if (prev.has(key)) {
         // log the two parks being re-compared
-        console.log(
+        devLog(
           `Duplicate comparison: "${parkToInsert.name}" vs "${pivotPark.name}" (key=${key})`
         );
         return prev;
