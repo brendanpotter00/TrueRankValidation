@@ -305,9 +305,13 @@ export const Header = () => {
             className="nav-button share-button"
             title="Share rankings as image"
             disabled={isGeneratingShare || !shareFile}
+            aria-label="Share rankings"
+            type="button"
+            role="button"
+            tabIndex={0}
           >
             {isGeneratingShare ? (
-              <div className="spinner" />
+              <div className="spinner" aria-label="Generating share image" />
             ) : (
               <svg
                 width="20"
@@ -318,10 +322,12 @@ export const Header = () => {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                aria-hidden="true"
+                focusable="false"
               >
-                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-                <polyline points="16,6 12,2 8,6"></polyline>
-                <line x1="12" y1="2" x2="12" y2="15"></line>
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                <polyline points="16,6 12,2 8,6" />
+                <line x1="12" y1="2" x2="12" y2="15" />
               </svg>
             )}
           </button>

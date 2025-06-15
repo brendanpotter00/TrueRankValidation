@@ -30,6 +30,8 @@
   color: var(--primary-color);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: relative;
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+  touch-action: manipulation; /* Improve touch handling */
 }
 
 .app-header .nav-button:hover {
@@ -44,9 +46,33 @@
   transform: translateY(0);
 }
 
+.app-header .nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .app-header .nav-button svg {
   width: 20px;
   height: 20px;
+  pointer-events: none; /* Prevent SVG from capturing clicks */
+}
+
+/* Spinner styles */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .copy-success {
@@ -61,6 +87,7 @@
   font-size: 0.75rem;
   white-space: nowrap;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
 }
 
 @media (max-width: 768px) {
@@ -68,6 +95,10 @@
     top: 0.75rem;
     left: 0.75rem;
     right: 0.75rem;
+    padding: 0.5rem;
+    background: var(--surface-color);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .header-right {
@@ -77,6 +108,8 @@
   .app-header .nav-button {
     width: 44px;
     height: 44px;
+    min-width: 44px; /* Prevent button from shrinking */
+    min-height: 44px;
   }
 
   .app-header .nav-button svg {
@@ -84,8 +117,39 @@
     height: 18px;
   }
 
+  .spinner {
+    width: 18px;
+    height: 18px;
+  }
+
   .copy-success {
     font-size: 0.7rem;
     top: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    top: 0.5rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    padding: 0.375rem;
+  }
+
+  .app-header .nav-button {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .app-header .nav-button svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
   }
 }
