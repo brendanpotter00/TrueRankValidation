@@ -15,6 +15,12 @@ export interface Session {
   created_at?: string;
 }
 
+export interface EmailSubscription {
+  id?: string;
+  email: string;
+  created_at?: string;
+}
+
 // key in localStorage for our one-session-per-browser
 const SESSION_KEY = "national-park-ranker-session";
 
@@ -266,5 +272,84 @@ export async function getListsLengths() {
   } catch (err) {
     console.error("Failed to fetch lists lengths:", err);
     return { data: null, error: "Failed to fetch lists lengths" };
+  }
+}
+
+/**
+ * Validates an email address format
+ */
+function isValidEmail(email: string): boolean {
+  // RFC 5322 compliant email regex
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return emailRegex.test(email);
+}
+
+/**
+ * Subscribe an email to updates, preventing duplicates
+ */
+export async function subscribeEmail(
+  email: string
+): Promise<{ success: boolean; error?: string; isDuplicate?: boolean }> {
+  try {
+    const trimmedEmail = email.toLowerCase().trim();
+
+    // Validate email format
+    if (!isValidEmail(trimmedEmail)) {
+      return {
+        success: false,
+        error: "Please enter a valid email address",
+      };
+    }
+
+    // Validate email length (most email providers have a max length of 254 characters)
+    if (trimmedEmail.length > 254) {
+      return {
+        success: false,
+        error: "Email address is too long",
+      };
+    }
+
+    // First check if email already exists
+    const { data: existing, error: checkError } = await supabase
+      .from("email_subscriptions")
+      .select("email")
+      .eq("email", trimmedEmail)
+      .limit(1);
+
+    if (checkError) {
+      console.error("Error checking for existing email:", checkError);
+      return { success: false, error: "An error occurred. Please try again." };
+    }
+
+    if (existing && existing.length > 0) {
+      return { success: true, isDuplicate: true };
+    }
+
+    // If email doesn't exist, insert it
+    const { error: insertError } = await supabase
+      .from("email_subscriptions")
+      .insert([
+        {
+          email: trimmedEmail,
+          created_at: new Date().toISOString(),
+        },
+      ]);
+
+    if (insertError) {
+      console.error("Error subscribing email:", insertError);
+      return {
+        success: false,
+        error: "An error occurred. Please try again.",
+      };
+    }
+
+    return { success: true };
+  } catch (err) {
+    console.error("Failed to subscribe email:", err);
+    return {
+      success: false,
+      error: "An unexpected error occurred. Please try again.",
+    };
   }
 }
