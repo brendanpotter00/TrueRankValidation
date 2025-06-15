@@ -1,6 +1,7 @@
 // src/hooks/usePageTracking.ts
 import { useEffect, useRef } from "react";
 import { trackLists, trackPageView } from "../supabase/supabaseEndpoints";
+import { isLocalEnv } from "../utils/environment";
 import type { Park } from "../data/parks";
 
 /**
@@ -10,7 +11,7 @@ export function usePageTracker(path: string, enabled: boolean = false) {
   const hasTracked = useRef(false);
 
   useEffect(() => {
-    if (enabled && !hasTracked.current) {
+    if (enabled && !hasTracked.current && !isLocalEnv) {
       trackPageView(path);
       hasTracked.current = true;
     }
