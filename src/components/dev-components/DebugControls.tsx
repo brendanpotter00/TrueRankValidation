@@ -1,168 +1,61 @@
-import { useEffect, useRef } from "react";
+import { useControls, folder, button } from "leva";
 import { useThree, useFrame } from "@react-three/fiber";
-import { GUI } from "lil-gui";
 
 interface DebugControlsProps {
-  onCameraChange?: (position: [number, number, number], fov: number) => void;
+  onModelChange?: (position: [number, number, number]) => void;
 }
 
-const DebugControls = ({ onCameraChange }: DebugControlsProps) => {
+const DebugControls = ({ onModelChange }: DebugControlsProps) => {
   const { camera } = useThree();
-  const guiRef = useRef<GUI | null>(null);
-  const settingsRef = useRef({
-    positionX: camera.position.x,
-    positionY: camera.position.y,
-    positionZ: camera.position.z,
-    fov: (camera as any).fov || 45,
-  });
 
-  // Use frame loop to ensure smooth updates
-  useFrame(() => {
-    // Sync camera position with settings
-    if (settingsRef.current) {
-      camera.position.set(
-        settingsRef.current.positionX,
-        settingsRef.current.positionY,
-        settingsRef.current.positionZ
+  // Create Leva controls
+  const controls = useControls({
+    // Model controls
+    modelX: { value: 0, min: -10, max: 10, step: 0.1 },
+    modelY: { value: 0, min: -10, max: 10, step: 0.1 },
+    modelZ: { value: 0, min: -10, max: 10, step: 0.1 },
+    resetModel: button(() => {
+      onModelChange?.([0, 0, 0]);
+    }),
+    logModelValues: button(() => {
+      if (!controls) return;
+      console.log("Current Model Position:");
+      console.log(
+        `Position: [${controls.modelX.toFixed(2)}, ${controls.modelY.toFixed(
+          2
+        )}, ${controls.modelZ.toFixed(2)}]`
       );
+    }),
 
-      if ("fov" in camera) {
-        (camera as any).fov = settingsRef.current.fov;
-        camera.updateProjectionMatrix();
-      }
+    // Camera controls
+    cameraX: { value: -16.41, min: -80, max: 80, step: 0.1 },
+    cameraY: { value: 12.42, min: -60, max: 80, step: 0.1 },
+    cameraZ: { value: -15.3, min: -80, max: 80, step: 0.1 },
+    resetCamera: button(() => {
+      camera.position.set(-16.41, 12.42, -15.3);
+    }),
+    logCameraValues: button(() => {
+      if (!controls) return;
+      console.log("Current Camera Position:");
+      console.log(
+        `Position: [${camera.position.x.toFixed(
+          2
+        )}, ${camera.position.y.toFixed(2)}, ${camera.position.z.toFixed(2)}]`
+      );
+    }),
+  }) as any;
+
+  // Update positions on every frame
+  useFrame(() => {
+    if (controls) {
+      // Update model position
+      onModelChange?.([controls.modelX, controls.modelY, controls.modelZ]);
+      // Update camera position directly
+      camera.position.set(controls.cameraX, controls.cameraY, controls.cameraZ);
     }
   });
 
-  useEffect(() => {
-    // Create GUI
-    const gui = new GUI();
-    guiRef.current = gui;
-
-    // Camera position controls
-    const cameraFolder = gui.addFolder("Camera");
-
-    // Initialize settings with current camera values
-    settingsRef.current = {
-      positionX: camera.position.x,
-      positionY: camera.position.y,
-      positionZ: camera.position.z,
-      fov: (camera as any).fov || 45,
-    };
-
-    // Position controls
-    const posXController = cameraFolder
-      .add(settingsRef.current, "positionX", -10, 10, 0.1)
-      .name("Position X")
-      .onChange((value: number) => {
-        settingsRef.current.positionX = value;
-        onCameraChange?.(
-          [
-            settingsRef.current.positionX,
-            settingsRef.current.positionY,
-            settingsRef.current.positionZ,
-          ],
-          settingsRef.current.fov
-        );
-      });
-
-    const posYController = cameraFolder
-      .add(settingsRef.current, "positionY", -10, 10, 0.1)
-      .name("Position Y")
-      .onChange((value: number) => {
-        settingsRef.current.positionY = value;
-        onCameraChange?.(
-          [
-            settingsRef.current.positionX,
-            settingsRef.current.positionY,
-            settingsRef.current.positionZ,
-          ],
-          settingsRef.current.fov
-        );
-      });
-
-    const posZController = cameraFolder
-      .add(settingsRef.current, "positionZ", -10, 10, 0.1)
-      .name("Position Z")
-      .onChange((value: number) => {
-        settingsRef.current.positionZ = value;
-        onCameraChange?.(
-          [
-            settingsRef.current.positionX,
-            settingsRef.current.positionY,
-            settingsRef.current.positionZ,
-          ],
-          settingsRef.current.fov
-        );
-      });
-
-    let fovController: any = null;
-    // FOV control (only for PerspectiveCamera)
-    if ("fov" in camera) {
-      fovController = cameraFolder
-        .add(settingsRef.current, "fov", 10, 120, 1)
-        .name("Field of View")
-        .onChange((value: number) => {
-          settingsRef.current.fov = value;
-          onCameraChange?.(
-            [
-              settingsRef.current.positionX,
-              settingsRef.current.positionY,
-              settingsRef.current.positionZ,
-            ],
-            value
-          );
-        });
-    }
-
-    cameraFolder.open();
-
-    // Add a button to log current values
-    const actions = {
-      logCurrentValues: () => {
-        console.log("Current Camera Settings:");
-        console.log(
-          `Position: [${settingsRef.current.positionX.toFixed(
-            2
-          )}, ${settingsRef.current.positionY.toFixed(
-            2
-          )}, ${settingsRef.current.positionZ.toFixed(2)}]`
-        );
-        console.log(`FOV: ${settingsRef.current.fov}`);
-      },
-      resetCamera: () => {
-        settingsRef.current.positionX = 0;
-        settingsRef.current.positionY = 1;
-        settingsRef.current.positionZ = 5;
-        settingsRef.current.fov = 45;
-
-        // Update individual controllers
-        posXController.updateDisplay();
-        posYController.updateDisplay();
-        posZController.updateDisplay();
-        if (fovController) {
-          fovController.updateDisplay();
-        }
-
-        onCameraChange?.(
-          [
-            settingsRef.current.positionX,
-            settingsRef.current.positionY,
-            settingsRef.current.positionZ,
-          ],
-          settingsRef.current.fov
-        );
-      },
-    };
-
-    gui.add(actions, "logCurrentValues").name("Log Current Values");
-    gui.add(actions, "resetCamera").name("Reset Camera");
-
-    return () => {
-      gui.destroy();
-    };
-  }, [camera, onCameraChange]);
-
-  return null; // This component doesn't render anything visually
+  return null;
 };
 
 export default DebugControls;

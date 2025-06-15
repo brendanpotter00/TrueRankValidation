@@ -1,19 +1,35 @@
 /* Landing Component Styles */
 .landing-container {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  height: 80vh;
-  gap: 1rem;
-  text-align: left;
+  justify-content: space-between;
+  gap: 2rem;
   padding: 2rem;
-  position: relative; /* Add this for proper carousel positioning */
+  min-height: 80vh;
 }
 
-/* 1 part out of 3 */
 .landing-content {
   flex: 1;
-  padding: 2rem;
-  border-radius: 12px;
+  max-width: 50%;
+  z-index: 1;
+}
+
+.landing-model {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 80vh;
+  width: 100%;
+  z-index: -2;
+  outline: 1px solid red;
+}
+
+/* 3D Model Container Styles */
+.world3d-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .landing-content h1 {
@@ -50,19 +66,28 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Mobile responsive - stack vertically */
+/* Mobile responsive styles for 3D model */
 @media (max-width: 768px) {
   .landing-container {
     flex-direction: column;
-    text-align: center;
-    height: 80vh;
-    gap: 0.5rem;
     padding: 1rem;
+    min-height: auto;
   }
 
   .landing-content {
-    padding: 1rem;
-    order: 2;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .landing-model {
+    width: 100%;
+    height: 50vh;
+    min-height: 300px;
+    max-height: 400px;
+  }
+
+  .world3d-wrapper {
+    border-radius: 4px;
   }
 
   .landing-content h1 {
@@ -78,8 +103,6 @@
   .landing-earth {
     width: 350px;
     height: 350px;
-    order: 1;
-    flex: none;
   }
 
   .start-button {

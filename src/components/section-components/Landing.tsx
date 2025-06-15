@@ -3,7 +3,7 @@ import { setCurrentStep } from "../../store/parksSlice";
 import { usePageTracker } from "../../hooks/trackingHooks";
 import type { AppDispatch } from "../../store/store";
 import { LandingMetrics } from "../LandingMetrics";
-import Earth3D from "../3d-components/Earth3D";
+import Camping3D from "../3d-components/Camping3D";
 
 export const Landing = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -34,9 +34,9 @@ export const Landing = () => {
           <button onClick={handleStart} className="start-button">
             Start Ranking
           </button>
-        </div>
-        <div className="landing-earth">
-          <Earth3D />
+          <div className="landing-model">
+            <Camping3D />
+          </div>
         </div>
       </div>
       <LandingMetrics />
