@@ -68,12 +68,14 @@ export const Ranking = () => {
 
       <UndoButton onUndo={handleUndo} disabled={!canUndo} />
 
-      <SortedParksGrid
-        parks={sortedParks.map((park) => ({
-          ...park,
-          imageUrl: getImageSource(park.id),
-        }))}
-      />
+      {false && (
+        <SortedParksGrid
+          parks={sortedParks.map((park) => ({
+            ...park,
+            imageUrl: getImageSource(park.id),
+          }))}
+        />
+      )}
     </div>
   );
 };

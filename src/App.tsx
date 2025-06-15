@@ -4,6 +4,7 @@ import { Landing } from "./components/section-components/Landing";
 import { Selection } from "./components/section-components/Selection";
 import { Ranking } from "./components/section-components/Ranking";
 import { Results } from "./components/section-components/Results";
+import { Footer } from "./components/Footer";
 import type { RootState } from "./types/reduxTypes";
 
 function App() {
@@ -14,10 +15,13 @@ function App() {
   return (
     <div className="app">
       <Header />
-      {currentStep === "selection" && <Landing />}
-      {currentStep === "selection" && <Selection />}
-      {currentStep === "ranking" && <Ranking />}
-      {currentStep === "results" && <Results />}
+      <main className="flex-grow">
+        {currentStep === "selection" && <Landing />}
+        {currentStep === "selection" && <Selection />}
+        {currentStep === "ranking" && <Ranking />}
+        {currentStep === "results" && <Results />}
+      </main>
+      <Footer />
     </div>
   );
 }
