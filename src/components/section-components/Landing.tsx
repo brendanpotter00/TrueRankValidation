@@ -31,7 +31,7 @@ export const Landing = () => {
       <div className="landing-container">
         <div className="landing-content">
           <h1>
-            national park{" "}
+            park{" "}
             <TypeAnimation
               sequence={["Ranker", 2000, "rankr", 8000]}
               speed={1}
@@ -43,7 +43,7 @@ export const Landing = () => {
           </h1>
           <p>get your true ranked list for u.s. national parks</p>
           <button onClick={handleStart} className="start-button">
-            Start Ranking
+            start ranking
           </button>
         </div>
         <div className="landing-earth">

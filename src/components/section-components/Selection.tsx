@@ -83,8 +83,8 @@ export const Selection = () => {
 
   return (
     <div className="selection-container">
-      <h2>Select Parks to Rank</h2>
-      <p>Choose at least 2 parks to begin ranking</p>
+      <h2>select parks to rank</h2>
+      <p>choose at least 2 parks to begin ranking</p>
       <ToggleGroup.Root
         type="multiple"
         className="parks-grid"
