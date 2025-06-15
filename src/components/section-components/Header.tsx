@@ -62,6 +62,9 @@ export const Header = () => {
 
     // Create a wrapper div for the background
     const wrapper = document.createElement("div");
+    wrapper.style.position = "fixed";
+    wrapper.style.top = "-9999px";
+    wrapper.style.left = "-9999px";
     wrapper.style.width = "1000px";
     wrapper.style.maxWidth = "1000px";
     wrapper.style.margin = "0 auto";
@@ -76,6 +79,7 @@ export const Header = () => {
     wrapper.style.borderRadius = "1rem";
     wrapper.style.overflow = "hidden";
     wrapper.style.color = isDarkMode ? "#ffffff" : "var(--text-color)";
+    wrapper.style.zIndex = "-1";
 
     // Add a subtle dark mode overlay to the content
     if (isDarkMode) {
@@ -87,6 +91,7 @@ export const Header = () => {
       darkOverlay.style.bottom = "0";
       darkOverlay.style.backgroundColor = "rgba(0, 0, 0, 0.3)";
       darkOverlay.style.pointerEvents = "none";
+      darkOverlay.style.zIndex = "1";
       wrapper.appendChild(darkOverlay);
     }
 
@@ -99,6 +104,8 @@ export const Header = () => {
     clone.style.maxWidth = "900px";
     clone.style.margin = "0 auto";
     clone.style.padding = "0";
+    clone.style.position = "relative";
+    clone.style.zIndex = "2";
 
     // Style rank numbers properly
     const rankNumbers = clone.querySelectorAll(".rank-number");
@@ -203,16 +210,24 @@ export const Header = () => {
           const clonedWrapper = clonedDoc.querySelector("div");
           if (clonedWrapper) {
             (clonedWrapper as HTMLElement).style.transform = "none";
+            (clonedWrapper as HTMLElement).style.position = "relative";
+            (clonedWrapper as HTMLElement).style.top = "0";
+            (clonedWrapper as HTMLElement).style.left = "0";
           }
         },
       });
 
-      // Clean up the wrapper
-      document.body.removeChild(wrapper);
+      // Clean up the wrapper immediately after capture
+      if (document.body.contains(wrapper)) {
+        document.body.removeChild(wrapper);
+      }
 
       canvas.toBlob(
         async (blob) => {
-          if (!blob) return;
+          if (!blob) {
+            console.error("Failed to create blob from canvas");
+            return;
+          }
 
           const file = new File([blob], "my-park-rankings.png", {
             type: "image/png",
@@ -242,7 +257,10 @@ export const Header = () => {
       );
     } catch (err) {
       console.error("Error generating image:", err);
-      document.body.removeChild(wrapper);
+      // Ensure wrapper is cleaned up even if there's an error
+      if (document.body.contains(wrapper)) {
+        document.body.removeChild(wrapper);
+      }
     }
   };
 
