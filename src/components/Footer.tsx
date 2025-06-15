@@ -2,7 +2,6 @@ import {
   InstagramLogoIcon,
   LinkedInLogoIcon,
   GitHubLogoIcon,
-  EnvelopeClosedIcon,
 } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
 import "../styles/components/Footer.css";
