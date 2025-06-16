@@ -1,5 +1,7 @@
 import html2canvas from "html2canvas";
 
+const IMAGE_LOAD_TIMEOUT = 5000; // 5 seconds timeout for image loading
+
 export async function generateShareImage(isDarkMode: boolean): Promise<File> {
   console.log("[shareImage] Starting image generation, dark mode:", isDarkMode);
 
@@ -80,21 +82,37 @@ export async function generateShareImage(isDarkMode: boolean): Promise<File> {
   console.log("[shareImage] Found images to process:", images.length);
 
   try {
+    // Process images with timeout
     await Promise.all(
       Array.from(images).map((img) => {
         return new Promise((resolve) => {
-          img.crossOrigin = "anonymous";
+          // Remove crossOrigin attribute since we're loading from same domain
+          img.removeAttribute("crossOrigin");
+
           if (img.complete) {
             console.log("[shareImage] Image already loaded:", img.src);
             resolve(null);
           } else {
             console.log("[shareImage] Waiting for image to load:", img.src);
+
+            // Set up timeout
+            const timeoutId = setTimeout(() => {
+              console.warn("[shareImage] Image load timeout:", img.src);
+              resolve(null); // Resolve anyway to not block the process
+            }, IMAGE_LOAD_TIMEOUT);
+
             img.onload = () => {
+              clearTimeout(timeoutId);
               console.log("[shareImage] Image loaded:", img.src);
               resolve(null);
             };
+
             img.onerror = (err) => {
+              clearTimeout(timeoutId);
               console.error("[shareImage] Image failed to load:", img.src, err);
+              // Set a placeholder or empty image to prevent broken image icon
+              img.src =
+                "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
               resolve(null);
             };
           }
@@ -106,19 +124,31 @@ export async function generateShareImage(isDarkMode: boolean): Promise<File> {
     // Also load the background image
     console.log("[shareImage] Loading background image");
     const bgImage = new Image();
-    bgImage.crossOrigin = "anonymous";
+    bgImage.removeAttribute("crossOrigin");
     bgImage.src = "/topo.jpeg";
+
     await new Promise((resolve) => {
+      const timeoutId = setTimeout(() => {
+        console.warn("[shareImage] Background image load timeout");
+        resolve(null);
+      }, IMAGE_LOAD_TIMEOUT);
+
       if (bgImage.complete) {
+        clearTimeout(timeoutId);
         console.log("[shareImage] Background image already loaded");
         resolve(null);
       } else {
         bgImage.onload = () => {
+          clearTimeout(timeoutId);
           console.log("[shareImage] Background image loaded");
           resolve(null);
         };
         bgImage.onerror = (err) => {
+          clearTimeout(timeoutId);
           console.error("[shareImage] Background image failed to load:", err);
+          // Use a fallback background color if image fails
+          wrapper.style.backgroundImage = "none";
+          wrapper.style.backgroundColor = isDarkMode ? "#1a1a1a" : "#f5f5f5";
           resolve(null);
         };
       }
@@ -168,7 +198,7 @@ export async function generateShareImage(isDarkMode: boolean): Promise<File> {
     console.log("[shareImage] Starting html2canvas conversion");
     const canvas = await html2canvas(wrapper, {
       scale: 2,
-      useCORS: true,
+      useCORS: false, // Disable CORS since we're not using crossOrigin anymore
       allowTaint: true,
       backgroundColor: "transparent",
       logging: false,
