@@ -34,14 +34,6 @@ export async function generateShareImage(isDarkMode: boolean): Promise<File> {
   wrapper.style.overflow = "hidden";
   wrapper.style.color = isDarkMode ? "#ffffff" : "var(--text-color)";
 
-  // Make the wrapper invisible while generating the image
-  wrapper.style.position = "absolute";
-  wrapper.style.left = "-9999px";
-  wrapper.style.top = "-9999px";
-  wrapper.style.opacity = "0";
-  wrapper.style.pointerEvents = "none";
-  wrapper.style.zIndex = "-1";
-
   // Add a subtle dark mode overlay to the content
   if (isDarkMode) {
     const darkOverlay = document.createElement("div");
