@@ -31,13 +31,24 @@ export const Header = () => {
   // Pre-generate share image when results are shown
   useEffect(() => {
     if (currentStep === "results") {
+      console.log("[Header] Starting share image generation...");
       generateShareImage(isDarkMode)
-        .then((file) => setShareFile(file))
-        .catch((err) =>
-          console.error("Failed to pre-generate share image:", err)
-        );
+        .then((file) => {
+          console.log("[Header] Share image generated successfully:", file);
+          setShareFile(file);
+        })
+        .catch((err) => {
+          console.error("[Header] Failed to pre-generate share image:", err);
+          // Log additional context about the current state
+          console.log("[Header] Current state:", {
+            currentStep,
+            isDarkMode,
+            hasResultsContainer: !!document.querySelector(".results-container"),
+            rankedParksCount: rankedParks.length,
+          });
+        });
     }
-  }, [currentStep, isDarkMode]);
+  }, [currentStep, isDarkMode, rankedParks.length]);
 
   const handleGoHome = useCallback(() => {
     dispatch(setCurrentStep("selection"));
@@ -65,8 +76,12 @@ export const Header = () => {
   };
 
   const handleShareRankings = async () => {
+    console.log(
+      "[Header] Share button clicked, shareFile state:",
+      shareFile ? "exists" : "null"
+    );
     if (!shareFile) {
-      console.error("Share file not ready");
+      console.error("[Header] Share file not ready");
       return;
     }
 
@@ -75,15 +90,18 @@ export const Header = () => {
       navigator.canShare &&
       navigator.canShare({ files: [shareFile] })
     ) {
+      console.log("[Header] Using Web Share API");
       try {
         await navigator.share({
           title: "My National Park Rankings",
           text: "Check out my national park rankings!",
           files: [shareFile],
         });
+        console.log("[Header] Share successful");
       } catch (err) {
-        console.error("Error sharing:", err);
+        console.error("[Header] Error sharing:", err);
         // Fallback to download if share fails
+        console.log("[Header] Falling back to download");
         const url = URL.createObjectURL(shareFile);
         const link = document.createElement("a");
         link.href = url;
@@ -94,6 +112,9 @@ export const Header = () => {
         URL.revokeObjectURL(url);
       }
     } else {
+      console.log(
+        "[Header] Web Share API not available, falling back to download"
+      );
       // Fallback to download if Web Share API is not available
       const url = URL.createObjectURL(shareFile);
       const link = document.createElement("a");

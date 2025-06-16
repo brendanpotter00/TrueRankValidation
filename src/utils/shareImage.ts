@@ -1,14 +1,19 @@
 import html2canvas from "html2canvas";
 
 export async function generateShareImage(isDarkMode: boolean): Promise<File> {
+  console.log("[shareImage] Starting image generation, dark mode:", isDarkMode);
+
   const resultsContainer =
     document.querySelector<HTMLElement>(".results-container");
   if (!resultsContainer) {
+    console.error("[shareImage] Results container not found in DOM");
     throw new Error("Results container not found");
   }
+  console.log("[shareImage] Found results container");
 
   // Create a clone of the container for manipulation
   const clone = resultsContainer.cloneNode(true) as HTMLElement;
+  console.log("[shareImage] Created container clone");
 
   // Create a wrapper div for the background
   const wrapper = document.createElement("div");
@@ -43,6 +48,7 @@ export async function generateShareImage(isDarkMode: boolean): Promise<File> {
   // Move the clone into the wrapper
   wrapper.appendChild(clone);
   document.body.appendChild(wrapper);
+  console.log("[shareImage] Added wrapper to DOM");
 
   // Adjust the clone container
   clone.style.width = "100%";
@@ -71,75 +77,95 @@ export async function generateShareImage(isDarkMode: boolean): Promise<File> {
 
   // Handle all images in the clone
   const images = clone.querySelectorAll("img");
-  await Promise.all(
-    Array.from(images).map((img) => {
-      return new Promise((resolve) => {
-        img.crossOrigin = "anonymous";
-        if (img.complete) {
-          resolve(null);
-        } else {
-          img.onload = () => resolve(null);
-          img.onerror = () => resolve(null);
-        }
-      });
-    })
-  );
-
-  // Also load the background image
-  const bgImage = new Image();
-  bgImage.crossOrigin = "anonymous";
-  bgImage.src = "/topo.jpeg";
-  await new Promise((resolve) => {
-    if (bgImage.complete) {
-      resolve(null);
-    } else {
-      bgImage.onload = () => resolve(null);
-      bgImage.onerror = () => resolve(null);
-    }
-  });
-
-  // Adjust hero section for sharing
-  const heroSection = clone.querySelector(".hero-section");
-  if (heroSection) {
-    (heroSection as HTMLElement).style.margin = "0 auto 2rem";
-    (heroSection as HTMLElement).style.width = "100%";
-    (heroSection as HTMLElement).style.maxWidth = "700px";
-  }
-
-  // Adjust hero image for sharing
-  const heroImage = clone.querySelector(".hero-image");
-  if (heroImage) {
-    (heroImage as HTMLElement).style.width = "100%";
-    (heroImage as HTMLElement).style.maxWidth = "400px";
-  }
-
-  // Adjust rankings list for sharing
-  const rankingsList = clone.querySelector(".rankings-list");
-  if (rankingsList) {
-    (rankingsList as HTMLElement).style.boxSizing = "border-box";
-    (rankingsList as HTMLElement).style.justifyContent = "center";
-  }
-
-  // Adjust ranking items for sharing
-  const rankingItems = clone.querySelectorAll(".ranking-item");
-  rankingItems.forEach((item) => {
-    (item as HTMLElement).style.width = "100%";
-    (item as HTMLElement).style.maxWidth = "250px";
-    (item as HTMLElement).style.margin = "0 auto";
-    (item as HTMLElement).style.display = "flex";
-    (item as HTMLElement).style.alignItems = "center";
-    (item as HTMLElement).style.gap = "0.75rem";
-    (item as HTMLElement).style.padding = "0.75rem";
-  });
-
-  // Adjust park images in ranking items
-  const parkImages = clone.querySelectorAll(".ranking-item .park-image");
-  parkImages.forEach((img) => {
-    (img as HTMLElement).style.width = "70px";
-    (img as HTMLElement).style.aspectRatio = "2/3";
-  });
+  console.log("[shareImage] Found images to process:", images.length);
 
   try {
+    await Promise.all(
+      Array.from(images).map((img) => {
+        return new Promise((resolve) => {
+          img.crossOrigin = "anonymous";
+          if (img.complete) {
+            console.log("[shareImage] Image already loaded:", img.src);
+            resolve(null);
+          } else {
+            console.log("[shareImage] Waiting for image to load:", img.src);
+            img.onload = () => {
+              console.log("[shareImage] Image loaded:", img.src);
+              resolve(null);
+            };
+            img.onerror = (err) => {
+              console.error("[shareImage] Image failed to load:", img.src, err);
+              resolve(null);
+            };
+          }
+        });
+      })
+    );
+    console.log("[shareImage] All images processed");
+
+    // Also load the background image
+    console.log("[shareImage] Loading background image");
+    const bgImage = new Image();
+    bgImage.crossOrigin = "anonymous";
+    bgImage.src = "/topo.jpeg";
+    await new Promise((resolve) => {
+      if (bgImage.complete) {
+        console.log("[shareImage] Background image already loaded");
+        resolve(null);
+      } else {
+        bgImage.onload = () => {
+          console.log("[shareImage] Background image loaded");
+          resolve(null);
+        };
+        bgImage.onerror = (err) => {
+          console.error("[shareImage] Background image failed to load:", err);
+          resolve(null);
+        };
+      }
+    });
+
+    // Adjust hero section for sharing
+    const heroSection = clone.querySelector(".hero-section");
+    if (heroSection) {
+      (heroSection as HTMLElement).style.margin = "0 auto 2rem";
+      (heroSection as HTMLElement).style.width = "100%";
+      (heroSection as HTMLElement).style.maxWidth = "700px";
+    }
+
+    // Adjust hero image for sharing
+    const heroImage = clone.querySelector(".hero-image");
+    if (heroImage) {
+      (heroImage as HTMLElement).style.width = "100%";
+      (heroImage as HTMLElement).style.maxWidth = "400px";
+    }
+
+    // Adjust rankings list for sharing
+    const rankingsList = clone.querySelector(".rankings-list");
+    if (rankingsList) {
+      (rankingsList as HTMLElement).style.boxSizing = "border-box";
+      (rankingsList as HTMLElement).style.justifyContent = "center";
+    }
+
+    // Adjust ranking items for sharing
+    const rankingItems = clone.querySelectorAll(".ranking-item");
+    rankingItems.forEach((item) => {
+      (item as HTMLElement).style.width = "100%";
+      (item as HTMLElement).style.maxWidth = "250px";
+      (item as HTMLElement).style.margin = "0 auto";
+      (item as HTMLElement).style.display = "flex";
+      (item as HTMLElement).style.alignItems = "center";
+      (item as HTMLElement).style.gap = "0.75rem";
+      (item as HTMLElement).style.padding = "0.75rem";
+    });
+
+    // Adjust park images in ranking items
+    const parkImages = clone.querySelectorAll(".ranking-item .park-image");
+    parkImages.forEach((img) => {
+      (img as HTMLElement).style.width = "70px";
+      (img as HTMLElement).style.aspectRatio = "2/3";
+    });
+
+    console.log("[shareImage] Starting html2canvas conversion");
     const canvas = await html2canvas(wrapper, {
       scale: 2,
       useCORS: true,
@@ -147,26 +173,33 @@ export async function generateShareImage(isDarkMode: boolean): Promise<File> {
       backgroundColor: "transparent",
       logging: false,
       onclone: (clonedDoc) => {
+        console.log("[shareImage] Canvas clone created");
         const clonedWrapper = clonedDoc.querySelector("div");
         if (clonedWrapper) {
           (clonedWrapper as HTMLElement).style.transform = "none";
         }
       },
     });
+    console.log("[shareImage] Canvas created successfully");
 
     // Clean up the wrapper
     document.body.removeChild(wrapper);
+    console.log("[shareImage] Wrapper removed from DOM");
 
     return new Promise((resolve, reject) => {
+      console.log("[shareImage] Converting canvas to blob");
       canvas.toBlob(
         (blob) => {
           if (!blob) {
+            console.error("[shareImage] Failed to create blob from canvas");
             reject(new Error("Failed to create blob from canvas"));
             return;
           }
+          console.log("[shareImage] Blob created, size:", blob.size);
           const file = new File([blob], "my-park-rankings.png", {
             type: "image/png",
           });
+          console.log("[shareImage] File created successfully");
           resolve(file);
         },
         "image/png",
@@ -174,6 +207,7 @@ export async function generateShareImage(isDarkMode: boolean): Promise<File> {
       );
     });
   } catch (err) {
+    console.error("[shareImage] Error during image generation:", err);
     document.body.removeChild(wrapper);
     throw err;
   }
