@@ -1,7 +1,53 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import "../styles/components/WhyBuilt.css";
+import { subscribeEmail } from "../supabase/supabaseEndpoints";
 
 export const WhyBuilt = () => {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<{
+    type: "success" | "error" | "duplicate" | "validation" | null;
+    message: string;
+  }>({ type: null, message: "" });
+
+  // Clear status message after 2 seconds
+  useEffect(() => {
+    if (status.type) {
+      const timer = setTimeout(() => {
+        setStatus({ type: null, message: "" });
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [status.type]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus({ type: null, message: "" });
+
+    const result = await subscribeEmail(email);
+
+    if (result.success) {
+      if (result.isDuplicate) {
+        setStatus({
+          type: "duplicate",
+          message: "You're already subscribed!",
+        });
+      } else {
+        setStatus({
+          type: "success",
+          message: "Thanks for subscribing!",
+        });
+        setEmail("");
+      }
+    } else {
+      setStatus({
+        type: result.error?.includes("valid email") ? "validation" : "error",
+        message: result.error || "Something went wrong. Please try again.",
+      });
+    }
+  };
+
   return (
     <div className="why-built">
       <div className="why-built-container">
@@ -35,6 +81,49 @@ export const WhyBuilt = () => {
             we turn any collection of things into an organized, crowd-sourced
             hierarchy—without the headache of traditional long-list sorting.
           </p>
+        </div>
+
+        {/* Email Signup Section */}
+        <div className="why-built-signup">
+          <h3 className="why-built-signup-title">
+            sign up for only important updates
+          </h3>
+          <p className="why-built-signup-subtitle">
+            of how this project evolves because this is just a validation of the
+            idea
+          </p>
+          <form onSubmit={handleSubmit} className="why-built-form">
+            <div className="why-built-input-container">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="email"
+                className={`why-built-input ${
+                  status.type === "validation" ? "why-built-input-error" : ""
+                }`}
+                required
+              />
+              {status.type && (
+                <p
+                  className={`why-built-status ${
+                    status.type === "error"
+                      ? "why-built-status-error"
+                      : status.type === "success"
+                      ? "why-built-status-success"
+                      : status.type === "validation"
+                      ? "why-built-status-validation"
+                      : "why-built-status-duplicate"
+                  }`}
+                >
+                  {status.message}
+                </p>
+              )}
+            </div>
+            <button type="submit" className="why-built-button">
+              sign up
+            </button>
+          </form>
         </div>
       </div>
     </div>

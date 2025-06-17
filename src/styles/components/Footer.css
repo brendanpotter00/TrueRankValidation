@@ -40,6 +40,20 @@
   font-size: 0.8rem;
 }
 
+.footer-why-built-link {
+  color: var(--primary-color);
+  opacity: 0.9;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+  margin-bottom: 0.5rem;
+}
+
+.footer-why-built-link:hover {
+  opacity: 1;
+  color: var(--primary-color);
+}
+
 .footer-form {
   display: flex;
   flex-direction: column;
