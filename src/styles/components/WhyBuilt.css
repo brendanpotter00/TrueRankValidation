@@ -1,0 +1,70 @@
+.why-built {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-image: linear-gradient(
+      rgba(26, 26, 26, 0.95),
+      rgba(26, 26, 26, 0.95)
+    ),
+    url("/topo.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.why-built-container {
+  max-width: 800px;
+  width: 100%;
+  background: var(--surface-color);
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+}
+
+.why-built-back-link {
+  display: inline-block;
+  margin-bottom: 2rem;
+  color: var(--text-color);
+  opacity: 0.7;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: opacity 0.2s ease;
+}
+
+.why-built-back-link:hover {
+  opacity: 1;
+  color: var(--primary-color);
+}
+
+.why-built-content {
+  text-align: center;
+  line-height: 1.8;
+  color: var(--text-color);
+}
+
+.why-built-content p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.why-built-content p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .why-built {
+    padding: 1rem;
+  }
+
+  .why-built-container {
+    padding: 2rem;
+  }
+
+  .why-built-content p {
+    font-size: 1rem;
+  }
+}

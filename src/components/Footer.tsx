@@ -4,6 +4,7 @@ import {
   GitHubLogoIcon,
 } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../styles/components/Footer.css";
 import { subscribeEmail } from "../supabase/supabaseEndpoints";
 
@@ -60,6 +61,9 @@ export const Footer = () => {
           <div className="footer-section">
             <h3 className="footer-title">see how the project evolves</h3>
             <p className="footer-subtitle">only important updates</p>
+            <Link to="/why-built" className="footer-why-built-link">
+              why this was built
+            </Link>
             <form onSubmit={handleSubmit} className="footer-form">
               <div className="footer-input-container">
                 <input
