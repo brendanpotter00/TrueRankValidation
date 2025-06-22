@@ -7,6 +7,7 @@
 @import "./components/Selection.css";
 @import "./components/Ranking.css";
 @import "./components/Results.css";
+@import "./components/GlobalRanking.css";
 @import "./components/Navigation.css";
 
 /* Shared styles */

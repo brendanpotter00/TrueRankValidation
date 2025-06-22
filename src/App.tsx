@@ -5,6 +5,7 @@ import { Landing } from "./components/section-components/Landing";
 import { Selection } from "./components/section-components/Selection";
 import { Ranking } from "./components/section-components/Ranking";
 import { Results } from "./components/section-components/Results";
+import { GlobalRanking } from "./components/section-components/GlobalRanking";
 import { Footer } from "./components/Footer";
 import { WhyBuilt } from "./components/WhyBuilt";
 import type { RootState } from "./types/reduxTypes";
@@ -32,6 +33,18 @@ function App() {
         }
       />
       <Route path="/why-built" element={<WhyBuilt />} />
+      <Route
+        path="/global-ranking"
+        element={
+          <div className="app">
+            <Header />
+            <main className="flex-grow">
+              <GlobalRanking />
+            </main>
+            <Footer />
+          </div>
+        }
+      />
     </Routes>
   );
 }

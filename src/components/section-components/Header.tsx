@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { HomeIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { setCurrentStep, resetState } from "../../store/parksSlice";
 import type { RootState } from "../../types/reduxTypes";
@@ -10,6 +11,7 @@ import { generateShareImage } from "../../utils/shareImage";
 
 export const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const [copySuccess, setCopySuccess] = useState(false);
   const [shareFile, setShareFile] = useState<File | null>(null);
   const currentStep = useSelector(
@@ -51,9 +53,20 @@ export const Header = () => {
   }, [currentStep, isDarkMode, rankedParks.length]);
 
   const handleGoHome = useCallback(() => {
-    dispatch(setCurrentStep("selection"));
-    window.history.pushState({ step: "selection" }, "", "?step=selection");
-  }, [dispatch]);
+    // If we're on a different route (like /global-ranking), navigate to home
+    if (window.location.pathname !== "/") {
+      navigate("/");
+    } else {
+      // If we're on the home route, just change the step
+      dispatch(setCurrentStep("selection"));
+      window.history.pushState({ step: "selection" }, "", "?step=selection");
+    }
+  }, [dispatch, navigate]);
+
+  const handleGlobalRanking = useCallback(() => {
+    // Navigate to global ranking page using React Router
+    navigate("/global-ranking");
+  }, [navigate]);
 
   const handleRestart = useCallback(() => {
     dispatch(resetState());
@@ -138,7 +151,16 @@ export const Header = () => {
         >
           <HomeIcon />
         </button>
-        <ThemeToggle />
+        <div className="header-right">
+          <button
+            onClick={handleGlobalRanking}
+            className="header-title"
+            title="View Global Rankings"
+          >
+            <span>Global ranking</span>
+          </button>
+          <ThemeToggle />
+        </div>
       </header>
     );
   }
@@ -205,9 +227,19 @@ export const Header = () => {
               <line x1="12" y1="2" x2="12" y2="15"></line>
             </svg>
           </button>
-          <ThemeToggle />
         </div>
       )}
+
+      <div className="header-right">
+        <button
+          onClick={handleGlobalRanking}
+          className="header-title"
+          title="View Global Rankings"
+        >
+          <span>Global ranking</span>
+        </button>
+        <ThemeToggle />
+      </div>
     </header>
   );
 };
