@@ -41,7 +41,7 @@ export const Landing = () => {
               className="typing-text"
             />
           </h1>
-          <p>create your ranked national park list in seconds</p>
+          <p>create your ranked national park list in seconds </p>
           <button onClick={handleStart} className="start-button">
             start ranking
           </button>

@@ -352,3 +352,44 @@ export async function subscribeEmail(
     };
   }
 }
+
+/**
+ * Get all lists from the database and flatten them into a single array of Park objects
+ */
+export async function getAllLists(): Promise<{
+  data: Park[] | null;
+  error: string | null;
+}> {
+  try {
+    const { data, error } = await supabase.from("lists").select("lists");
+
+    if (error) {
+      devErrorLog("Error fetching all lists:", error);
+      return { data: null, error: error.message };
+    }
+
+    if (!data || data.length === 0) {
+      return { data: [], error: null };
+    }
+
+    // Flatten all JSON arrays into a single array of Park objects
+    const allParks: Park[] = [];
+
+    data.forEach((row) => {
+      try {
+        const parksList = JSON.parse(row.lists) as Park[];
+        if (Array.isArray(parksList)) {
+          allParks.push(...parksList);
+        }
+      } catch (parseError) {
+        devErrorLog("Error parsing parks list:", parseError);
+        // Continue with other rows even if one fails to parse
+      }
+    });
+    console.log("allParks", allParks);
+    return { data: allParks, error: null };
+  } catch (err) {
+    console.error("Failed to fetch all lists:", err);
+    return { data: null, error: "Failed to fetch all lists" };
+  }
+}

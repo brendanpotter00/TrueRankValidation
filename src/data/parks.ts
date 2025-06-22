@@ -3,6 +3,9 @@ export interface Park {
   name: string;
   state: string;
   imageUrl: string;
+  votes?: number;
+  visits?: number;
+  eloScore?: number;
 }
 
 // Helper function to get the image path for a park
