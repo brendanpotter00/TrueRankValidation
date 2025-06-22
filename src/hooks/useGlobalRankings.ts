@@ -1,15 +1,11 @@
 import { useState, useEffect } from "react";
 import { getAllLists, getSessionCount } from "../supabase/supabaseEndpoints";
-import {
-  applyEloRanking,
-  getTopN,
-  getMostLiked,
-  getMostVisited,
-} from "../utils/arrayUtils";
+import { applyEloRanking } from "../utils/elo";
+import { getTopN, getMostLiked, getMostVisited } from "../utils/arrayUtils";
 import type { Park } from "../data/parks";
 
 interface GlobalRankingsData {
-  top10: Park[];
+  top20: Park[];
   mostLiked: Park | null;
   mostVisited: Park | null;
   totalVotes: number;
@@ -21,7 +17,7 @@ interface GlobalRankingsData {
 
 export const useGlobalRankings = (): GlobalRankingsData => {
   const [data, setData] = useState<GlobalRankingsData>({
-    top10: [],
+    top20: [],
     mostLiked: null,
     mostVisited: null,
     totalVotes: 0,
@@ -45,7 +41,7 @@ export const useGlobalRankings = (): GlobalRankingsData => {
 
         if (!allParks || allParks.length === 0) {
           setData({
-            top10: [],
+            top20: [],
             mostLiked: null,
             mostVisited: null,
             totalVotes: 0,
@@ -60,8 +56,8 @@ export const useGlobalRankings = (): GlobalRankingsData => {
         // Apply Elo ranking
         const rankedParks = applyEloRanking(allParks);
 
-        // Get top 10
-        const top10 = getTopN(rankedParks, 0);
+        // Get top 20
+        const top20 = getTopN(rankedParks, 20);
 
         // Get most liked and most visited
         const mostLiked = getMostLiked(rankedParks);
@@ -80,7 +76,7 @@ export const useGlobalRankings = (): GlobalRankingsData => {
         const activeUsers = sessionError ? 0 : sessionCount || 0;
 
         setData({
-          top10,
+          top20,
           mostLiked,
           mostVisited,
           totalVotes,

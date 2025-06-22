@@ -4,7 +4,7 @@ import { useGlobalRankings } from "../../hooks/useGlobalRankings";
 export const GlobalRanking = () => {
   usePageTracker("/global-ranking", true);
   const {
-    top10,
+    top20,
     mostLiked,
     mostVisited,
     totalVotes,
@@ -16,7 +16,7 @@ export const GlobalRanking = () => {
 
   // Debug logging
   console.log("GlobalRanking data:", {
-    top10: top10.length,
+    top20: top20.length,
     mostLiked: mostLiked?.name,
     mostVisited: mostVisited?.name,
     totalVotes,
@@ -98,12 +98,12 @@ export const GlobalRanking = () => {
         )}
 
         <div className="global-ranking-list">
-          <h2>Top National Parks</h2>
+          <h2>Top 20 National Parks</h2>
           <p>Global rankings based on community preferences and Elo scoring.</p>
 
-          {top10.length > 0 ? (
+          {top20.length > 0 ? (
             <div className="rankings-list">
-              {top10.map((park, index) => {
+              {top20.map((park, index) => {
                 console.log(
                   `Park ${index + 1}:`,
                   park.name,
@@ -122,7 +122,8 @@ export const GlobalRanking = () => {
                       <div className="stat">
                         <span className="stat-label">Elo Score:</span>
                         <span className="stat-value">
-                          {park.eloScore?.toLocaleString() || 0}
+                          {Math.floor(park.eloScore || 0)?.toLocaleString() ||
+                            0}
                         </span>
                       </div>
                       <div className="stat">

@@ -6,6 +6,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  margin-top: 3rem;
 }
 
 .global-ranking-content {
@@ -80,7 +81,6 @@
 }
 
 .global-ranking-list {
-  outline: 1px solid green;
   background: var(--surface-color);
   border: 2px solid var(--border-color);
   border-radius: 12px;
@@ -107,7 +107,6 @@
   flex-direction: column;
   gap: 1rem;
   margin-top: 1rem;
-  outline: 1px solid yellow;
 }
 
 .global-ranking-list .ranking-item {

@@ -354,10 +354,10 @@ export async function subscribeEmail(
 }
 
 /**
- * Get all lists from the database and flatten them into a single array of Park objects
+ * Get all lists from the database as a 2D array of Park arrays
  */
 export async function getAllLists(): Promise<{
-  data: Park[] | null;
+  data: Park[][] | null;
   error: string | null;
 }> {
   try {
@@ -372,22 +372,23 @@ export async function getAllLists(): Promise<{
       return { data: [], error: null };
     }
 
-    // Flatten all JSON arrays into a single array of Park objects
-    const allParks: Park[] = [];
+    // Parse each JSON array into a Park array, maintaining the 2D structure
+    const allLists: Park[][] = [];
 
     data.forEach((row) => {
       try {
         const parksList = JSON.parse(row.lists) as Park[];
         if (Array.isArray(parksList)) {
-          allParks.push(...parksList);
+          allLists.push(parksList);
         }
       } catch (parseError) {
         devErrorLog("Error parsing parks list:", parseError);
         // Continue with other rows even if one fails to parse
       }
     });
-    console.log("allParks", allParks);
-    return { data: allParks, error: null };
+
+    console.log("allLists (2D array):", allLists);
+    return { data: allLists, error: null };
   } catch (err) {
     console.error("Failed to fetch all lists:", err);
     return { data: null, error: "Failed to fetch all lists" };
