@@ -95,11 +95,39 @@
   margin-bottom: 1rem;
 }
 
-.global-ranking-list > p {
-  font-size: 1.1rem;
+/* Ranking title section */
+.ranking-title-section {
+  text-align: center;
   margin-bottom: 2rem;
+}
+
+.ranking-title-section h2 {
+  color: var(--primary-color);
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.ranking-title-section p {
+  font-size: 1.1rem;
+  margin-bottom: 0;
   color: var(--text-color);
   opacity: 0.9;
+}
+
+/* How it works link */
+.how-it-works-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95em;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.how-it-works-link:hover {
+  color: var(--accent-color);
+  border-bottom-color: var(--accent-color);
 }
 
 .rankings-list {

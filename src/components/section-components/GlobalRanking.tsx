@@ -1,8 +1,13 @@
+import { useState } from "react";
 import { usePageTracker } from "../../hooks/trackingHooks";
 import { useGlobalRankings } from "../../hooks/useGlobalRankings";
+import { HowItWorksModal } from "../HowItWorksModal";
+import "../../styles/components/GlobalRanking.css";
 
 export const GlobalRanking = () => {
   usePageTracker("/global-ranking", true);
+  const [showModal, setShowModal] = useState(false);
+
   const {
     top20,
     mostLiked,
@@ -98,8 +103,22 @@ export const GlobalRanking = () => {
         )}
 
         <div className="global-ranking-list">
-          <h2>Top 20 National Parks</h2>
-          <p>Global rankings based on community preferences and Elo scoring.</p>
+          <div className="ranking-title-section">
+            <h2>Top 20 National Parks</h2>
+            <p>
+              Global rankings based on community preferences and Elo scoring.{" "}
+              <a
+                href="#"
+                className="how-it-works-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowModal(true);
+                }}
+              >
+                How it works
+              </a>
+            </p>
+          </div>
 
           {top20.length > 0 ? (
             <div className="rankings-list">
@@ -150,6 +169,11 @@ export const GlobalRanking = () => {
             </div>
           )}
         </div>
+
+        <HowItWorksModal 
+          isOpen={showModal} 
+          onClose={() => setShowModal(false)} 
+        />
       </div>
     </div>
   );
