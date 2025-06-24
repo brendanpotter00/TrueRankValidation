@@ -57,7 +57,7 @@ export const useGlobalRankings = (): GlobalRankingsData => {
         const rankedParks = applyEloRanking(allParks);
 
         // Get top 20
-        const top20 = getTopN(rankedParks, 20);
+        const top20 = getTopN(rankedParks, 63);
 
         // Get most liked and most visited
         const mostLiked = getMostLiked(rankedParks);
